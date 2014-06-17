@@ -1143,7 +1143,7 @@ void idEntity::BecomeInactive( int flags )
 			}
 		}
 		// Becoming inactive automagically turns on motion blur again
-		renderEntity.skipMotionBlur = false;
+		// renderEntity.skipMotionBlur = false; //CHRIS
 		BecomeActive( TH_UPDATEVISUALS );
 	}
 }
@@ -3083,7 +3083,7 @@ bool idEntity::RunPhysics()
 	const bool useAbnormalVelocityHack = ( idStr::Cmp( name, "houndola" ) == 0 );
 	
 	// Disable motion blur if this object pushes the local player
-	renderEntity.skipMotionBlur = false;
+	 renderEntity.skipMotionBlur = false; //CHRIS
 	
 	// set pushed
 	for( i = 0; i < gameLocal.push.GetNumPushedEntities(); i++ )
@@ -3093,7 +3093,7 @@ bool idEntity::RunPhysics()
 		{
 			if( gameLocal.GetLocalClientNum() == ent->entityNumber )
 			{
-				renderEntity.skipMotionBlur = true;
+			//	renderEntity.skipMotionBlur = true; //CHRIS
 			}
 			if( useAbnormalVelocityHack )
 			{

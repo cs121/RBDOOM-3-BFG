@@ -3228,6 +3228,7 @@ idGameLocal::RunDebugInfo
 void idGameLocal::RunDebugInfo()
 {
 	idEntity* ent;
+//	idActor*		enemyEnt = enemy.GetEntity();
 	idPlayer* player;
 	
 	player = GetLocalPlayer();
@@ -3235,18 +3236,17 @@ void idGameLocal::RunDebugInfo()
 	{
 		return;
 	}
-	
 	const idVec3& origin = player->GetPhysics()->GetOrigin();
 	
 	if( g_showEntityInfo.GetBool() )
 	{
 		idMat3		axis = player->viewAngles.ToMat3();
-		idVec3		up = axis[ 2 ] * 5.0f;
+		idVec3		up = axis[ 2 ] * 8.0f; //CHRIS
 		idBounds	viewTextBounds( origin );
 		idBounds	viewBounds( origin );
 		
-		viewTextBounds.ExpandSelf( 128.0f );
-		viewBounds.ExpandSelf( 512.0f );
+		viewTextBounds.ExpandSelf( 256.0f );
+		viewBounds.ExpandSelf( 512.0f ); //CHRIS
 		for( ent = spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() )
 		{
 			// don't draw the worldspawn
@@ -3263,6 +3263,7 @@ void idGameLocal::RunDebugInfo()
 			
 			const idBounds& entBounds = ent->GetPhysics()->GetAbsBounds();
 			int contents = ent->GetPhysics()->GetContents();
+#if 0		//CHRIS	
 			if( contents & CONTENTS_BODY )
 			{
 				gameRenderWorld->DebugBounds( colorCyan, entBounds );
@@ -3286,11 +3287,16 @@ void idGameLocal::RunDebugInfo()
 					gameRenderWorld->DebugBounds( colorMdGrey, entBounds );
 				}
 			}
-			if( viewTextBounds.IntersectsBounds( entBounds ) )
+#endif
+			if (viewTextBounds.IntersectsBounds(entBounds))
 			{
-				gameRenderWorld->DrawText( ent->name.c_str(), entBounds.GetCenter(), 0.1f, colorWhite, axis, 1 );
-				gameRenderWorld->DrawText( va( "#%d", ent->entityNumber ), entBounds.GetCenter() + up, 0.1f, colorWhite, axis, 1 );
+				if (!ent->fl.isDormant & ent->IsType(idActor::Type))
+				{	
+				gameRenderWorld->DrawText(ent->name.c_str(), entBounds.GetCenter(), 0.25f, colorWhite, axis, 1);
+				//gameRenderWorld->DrawText(va("#%d", ent->entityNumber), entBounds.GetCenter() + up, 0.1f, colorWhite, axis, 1);
+				}
 			}
+
 		}
 	}
 	

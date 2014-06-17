@@ -80,12 +80,15 @@ bool idWaveFile::Open( const char* filename )
 	idSwap::Little( header.size );
 	idSwap::Big( header.format );
 	
+#if 0
 	if( header.id != 'RIFF' || header.format != 'WAVE' || header.size < 4 )
 	{
 		Close();
 		idLib::Warning( "Header is not RIFF WAVE in %s", filename );
 		return false;
 	}
+#endif
+	//CHRIS
 	
 	uint32 riffSize = header.size + 8;
 	uint32 offset = sizeof( header );

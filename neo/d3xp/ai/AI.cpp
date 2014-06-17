@@ -3727,19 +3727,20 @@ int idAI::ReactionTo( const idEntity* ent )
 		if( actor->fl.notarget )
 		{
 			// don't attack on sight when attacker is notargeted
-			return ATTACK_ON_DAMAGE | ATTACK_ON_ACTIVATE;
+			return ATTACK_ON_DAMAGE; // | ATTACK_ON_ACTIVATE;
 		}
 		return ATTACK_ON_SIGHT | ATTACK_ON_DAMAGE | ATTACK_ON_ACTIVATE;
 	}
 	
+	//CHRIS
 	// monsters will fight when attacked by lower ranked monsters.  rank 0 never fights back.
-	if( rank && ( actor->rank < rank ) )
-	{
+	//if( rank && ( actor->rank < rank ) )
+	//{
 		return ATTACK_ON_DAMAGE;
-	}
+	//}
 	
 	// don't fight back
-	return ATTACK_IGNORE;
+	//return ATTACK_IGNORE;
 }
 
 

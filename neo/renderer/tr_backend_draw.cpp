@@ -3982,7 +3982,7 @@ void RB_MotionBlur()
 	drawSurf_t** drawSurfs = ( drawSurf_t** )&backEnd.viewDef->drawSurfs[0];
 	for( int surfNum = 0; surfNum < backEnd.viewDef->numDrawSurfs; surfNum++ )
 	{
-		const drawSurf_t* surf = drawSurfs[ surfNum ];
+		const drawSurf_t* surf = drawSurfs[ surfNum ]; //CHRIS
 		
 		if( !surf->space->weaponDepthHack && !surf->space->skipMotionBlur && !surf->material->HasSubview() )
 		{
