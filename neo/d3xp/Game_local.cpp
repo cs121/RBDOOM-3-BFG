@@ -3241,7 +3241,8 @@ void idGameLocal::RunDebugInfo()
 	if( g_showEntityInfo.GetBool() )
 	{
 		idMat3		axis = player->viewAngles.ToMat3();
-		idVec3		up = axis[ 2 ] * 8.0f; //CHRIS
+		idVec3		up = axis[ 2 ] * 22.0f; //CHRIS
+		idVec4		monstercolor;
 		idBounds	viewTextBounds( origin );
 		idBounds	viewBounds( origin );
 		
@@ -3251,6 +3252,11 @@ void idGameLocal::RunDebugInfo()
 		{
 			// don't draw the worldspawn
 			if( ent == world )
+			{
+				continue;
+			}
+			
+			if (ent == player)
 			{
 				continue;
 			}
@@ -3290,13 +3296,18 @@ void idGameLocal::RunDebugInfo()
 #endif
 			if (viewTextBounds.IntersectsBounds(entBounds))
 			{
-				if (!ent->fl.isDormant & ent->IsType(idActor::Type))
+				if (ent->health>0 || !ent->fl.isDormant && ent->IsType(idActor::Type) && !ent->fl.hidden || ent->fl.hasAwakened)
 				{	
-				gameRenderWorld->DrawText(ent->name.c_str(), entBounds.GetCenter(), 0.25f, colorWhite, axis, 1);
-				//gameRenderWorld->DrawText(va("#%d", ent->entityNumber), entBounds.GetCenter() + up, 0.1f, colorWhite, axis, 1);
+					monstercolor = colorWhite;
+					if (ent->health < 80) monstercolor = colorLtGrey;
+					if (ent->health < 50) monstercolor = colorOrange;
+					if (ent->health > 20) monstercolor = colorRed;
+
+				gameRenderWorld->DrawText(va("monster: %s", ent->name.c_str()), entBounds.GetCenter()+1.5*up, 0.15f, monstercolor, axis, 1);
+				gameRenderWorld->DrawText(va("health: %d", ent->health), entBounds.GetCenter() + up, 0.15f, monstercolor, axis, 1);
 				}
 			}
-
+			
 		}
 	}
 	
