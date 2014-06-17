@@ -1,0 +1,33 @@
+From base/renderprogs/interaction.pixel
+
+That is the part that controls the light equation and specular contribution
+
+const half specularPower = 10.0f;
+half hDotN = dot3( normalize( fragment.texcoord6.xyz ), localNormal );
+half3 specularContribution = _half3( pow( abs( hDotN ), specularPower ) );
+
+half3 diffuseColor = diffuseMap * rpDiffuseModifier.xyz;
+half3 specularColor = specMap.xyz * specularContribution *
+rpSpecularModifier.xyz;
+half3 lightColor = lightProj.xyz * lightFalloff.xyz;
+
+result.color.xyz = ( diffuseColor + specularColor ) * lambert * lightColor
+* fragment.color.rgb;// + rimColor;
+result.color.w = 1.0;
+
+Vanilla D3 used texture lookup to calc the specular contribution so it had
+a fixed specular power too.
+
+A simple gloss map implementation would be to scale the alpha channel of
+the specMap which is in range from 0 to 1 to something like 0 and 100.
+
+Then it would be something like
+
+const half specularPower = specMap.a * 100;
+half3 specularContribution = _half3( pow( abs( hDotN ), specularPower ) )
+
+However this would break compatibility with the original assets because if
+there is no alpha value then specMap.a will be 1 and 1 * 100 = 100 instead
+of 10.
+The result would be similar to UE4 roughness 0. I'm not sure if a scalar
+multiplier like 10 is enough for good artistic control.
