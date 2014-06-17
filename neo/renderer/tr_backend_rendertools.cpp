@@ -2262,7 +2262,7 @@ void RB_ShowDebugText()
 		}
 	}
 	
-	glLineWidth( 1 );
+	glLineWidth( 6 ); //CHRIS
 }
 
 /*

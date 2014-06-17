@@ -3246,7 +3246,7 @@ void idGameLocal::RunDebugInfo()
 		idBounds	viewTextBounds( origin );
 		idBounds	viewBounds( origin );
 		
-		viewTextBounds.ExpandSelf( 256.0f );
+		viewTextBounds.ExpandSelf( 128.0f );
 		viewBounds.ExpandSelf( 512.0f ); //CHRIS
 		for( ent = spawnedEntities.Next(); ent != NULL; ent = ent->spawnNode.Next() )
 		{
@@ -3296,15 +3296,15 @@ void idGameLocal::RunDebugInfo()
 #endif
 			if (viewTextBounds.IntersectsBounds(entBounds))
 			{
-				if (ent->health>0 || !ent->fl.isDormant && ent->IsType(idActor::Type) && !ent->fl.hidden || ent->fl.hasAwakened)
+				if (ent->health>0 && !ent->fl.isDormant && ent->IsType(idActor::Type) && !ent->fl.hidden && ent->fl.hasAwakened)
 				{	
 					monstercolor = colorWhite;
 					if (ent->health < 80) monstercolor = colorLtGrey;
 					if (ent->health < 50) monstercolor = colorOrange;
-					if (ent->health > 20) monstercolor = colorRed;
+					if (ent->health < 20) monstercolor = colorRed;
 
-				gameRenderWorld->DrawText(va("monster: %s", ent->name.c_str()), entBounds.GetCenter()+1.5*up, 0.15f, monstercolor, axis, 1);
-				gameRenderWorld->DrawText(va("health: %d", ent->health), entBounds.GetCenter() + up, 0.15f, monstercolor, axis, 1);
+				gameRenderWorld->DrawText(va("monster: %s", ent->name.c_str()), entBounds.GetCenter()+1.25*up, 0.1f, monstercolor, axis, 1);
+				gameRenderWorld->DrawText(va("health: %d", ent->health), entBounds.GetCenter() + up, 0.1f, monstercolor, axis, 1);
 				}
 			}
 			
