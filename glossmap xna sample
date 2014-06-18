@@ -1,0 +1,47 @@
+XNA Shader Programming
+Tutorial 8 – Gloss map
+
+Hi, and welcome to tutorial 8 of my XNA Shader Tutorial series. Today I’m going to give you better control on you specular highlights by implementing something called "Gloss map".
+ 
+So, what is a gloss map?
+A gloss map is really just a black and white texture. Our goal is to use this texture to say how much a texel/surface will reflect at a particular point, and a black and white texture gives us an easy way to do this.
+Colors in a shader is given by the following format: r,g,b where each component can range from 0.0 to 1.0.
+ 
+Also, having a black and white texture means that each component got the same value:
+White=(1,1,1)
+Light gray=(0.8,0.8,0.8)
+Dark gray=(0.2,0.2,0.2)
+Black=(0,0,0)
+ 
+Glossmap example:
+
+ 
+We want the specular highlight to be strongest where the color is white, gradually reducing at different levels of gray, to none specular highlight where the color is totally black.
+ 
+Implementing the shader
+We need to load the Specular highlight texture in XNA and pass it to the shader. From the shader, we need to take the glossmap color from the texel we are working on and store it in a variable:
+ 
+float4 GlossMapColor = tex2D(GlossMapSampler, Tex);
+ 
+ 
+Now, we need to use the GlossMapColor in order to decide how much specular color the texel will reflect:
+// R = 2 * (N.L) * N – L
+float3 Reflect = normalize(2 * Diff * Normal – LightDir);  
+float Specular = pow(saturate(dot(Reflect, ViewDir)), 20); // R.V^n
+ 
+Now, notice that we have the maximum specular highlight stored in the variable "Specular". In order to reduce this, we need to somehow modify "Specular" in order to reduce it to the level we want. So how do we do this? You guessed right, by multiplying the Specular color with the GlossMapColor.
+ 
+Now, remember GlossMapColor contains the black and white value of our glossmap texture, so each rgb-component got the same value.
+This makes it possible to just use one of the components, and multiply it with "Specular" like this:
+ 
+// R = 2 * (N.L) * N – L
+float3 Reflect = normalize(2 * Diff * Normal – LightDir);  
+float Specular = pow(saturate(dot(Reflect, ViewDir)), 20); // R.V^n
+Specular = Specular*GlossMapColor.x;
+ 
+I’m using the x component of "GlossMapColor" to multiply "Specular" with. GlossMapColor.x ranges from 0.0 to 1.0 and works like a percentage when multiplying with Specular.
+ 
+So, if the glossmap is black, specular will be multiplied with 0.0, resulting in a specular value of 0.0. If it’s white, specular will remain unchanged and anything in between will make it more or less reflective depending on the grayness level of GlossMapColor.
+ 
+Knowing this, we can proceed with our normal lighting equation:
+return vAmbient + vDiffuseColor * ColorMapColor * Diff + vSpecularColor * Specular;
