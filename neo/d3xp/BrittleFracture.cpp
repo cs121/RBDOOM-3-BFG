@@ -221,7 +221,7 @@ void idBrittleFracture::Restore( idRestoreGame* savefile )
 	renderEntity.hModel = renderModelManager->AllocModel();
 	renderEntity.hModel->InitEmpty( brittleFracture_SnapshotName );
 	renderEntity.callback = idBrittleFracture::ModelCallback;
-	renderEntity.noShadow = true;
+	renderEntity.noShadow = false; //chris
 	renderEntity.noSelfShadow = true;
 	renderEntity.noDynamicInteractions = false;
 	
@@ -297,7 +297,7 @@ void idBrittleFracture::Spawn()
 	renderEntity.hModel = renderModelManager->AllocModel();
 	renderEntity.hModel->InitEmpty( brittleFracture_SnapshotName );
 	renderEntity.callback = idBrittleFracture::ModelCallback;
-	renderEntity.noShadow = true;
+	renderEntity.noShadow = false; //chris
 	renderEntity.noSelfShadow = true;
 	renderEntity.noDynamicInteractions = false;
 }
