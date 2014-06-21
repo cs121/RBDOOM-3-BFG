@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../sys_savegame.h"
 
 idCVar savegame_winInduceDelay( "savegame_winInduceDelay", "0", CVAR_INTEGER, "on windows, this is a delay induced before any file operation occurs" );
-extern idCVar fs_savepath;
+extern idCVar fs_game;
 extern idCVar saveGame_checksum;
 extern idCVar savegame_error;
 
@@ -125,7 +125,7 @@ int idSaveGameThread::Save()
 	idStrList filesToDelete;
 	if( ( callback->mode & SAVEGAME_MBF_DELETE_FILES ) && !callback->cancelled )
 	{
-		if( fileSystem->IsFolder( saveFolder.c_str(), "fs_savePath" ) == FOLDER_YES )
+		if( fileSystem->IsFolder( saveFolder.c_str(), "fs_game" ) == FOLDER_YES )
 		{
 			idFileList* files = fileSystem->ListFilesTree( saveFolder.c_str(), "*.*" );
 			for( int i = 0; i < files->GetNumFiles(); i++ )
@@ -178,7 +178,7 @@ int idSaveGameThread::Save()
 		fileName.AppendPath( file->GetName() );
 		idStr tempFileName = va( "%s.temp", fileName.c_str() );
 		
-		idFile* outputFile = fileSystem->OpenFileWrite( tempFileName, "fs_savePath" );
+		idFile* outputFile = fileSystem->OpenFileWrite( tempFileName, "fs_game" );
 		if( outputFile == NULL )
 		{
 #ifdef _WIN32 // DG: unify windows and posix savegames => replace GetLastError with strerror(errno)
@@ -262,7 +262,7 @@ int idSaveGameThread::Save()
 		if( ret == ERROR_SUCCESS )
 		{
 			// Remove the old file
-			if( !fileSystem->RenameFile( tempFileName, fileName, "fs_savePath" ) )
+			if( !fileSystem->RenameFile( tempFileName, fileName, "fs_game" ) ) //CHRIS
 			{
 				idLib::Warning( "Could not start to rename temporary file %s to %s.", tempFileName.c_str(), fileName.c_str() );
 			}
@@ -312,7 +312,7 @@ int idSaveGameThread::Load()
 	
 	saveFolder.AppendPath( callback->directory );
 	
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) != FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) != FOLDER_YES ) //CHRIS
 	{
 		callback->errorCode = SAVEGAME_E_FOLDER_NOT_FOUND;
 		return -1;
@@ -428,7 +428,7 @@ int idSaveGameThread::Delete()
 	saveFolder.AppendPath( callback->directory );
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES ) //CHRIS
 	{
 		idFileList* files = fileSystem->ListFilesTree( saveFolder, "/|*" );
 		for( int i = 0; i < files->GetNumFiles() && !callback->cancelled; i++ )
@@ -466,7 +466,7 @@ int idSaveGameThread::Enumerate()
 	callback->detailList.Clear();
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES ) //CHRIS
 	{
 		idFileList* files = fileSystem->ListFilesTree( saveFolder, SAVEGAME_DETAILS_FILENAME );
 		const idStrList& fileList = files->GetList();
@@ -568,7 +568,7 @@ int idSaveGameThread::EnumerateFiles()
 	callback->files.Clear();
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( folder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( folder, "fs_game" ) == FOLDER_YES )
 	{
 		// get listing of all the files, but filter out below
 		idFileList* files = fileSystem->ListFilesTree( folder, "*.*" );
@@ -611,7 +611,7 @@ int idSaveGameThread::EnumerateFiles()
 				
 				// populate the game details struct
 				details.slotName = callback->directory;
-				assert( fileSystem->IsFolder( details.slotName, "fs_savePath" ) == FOLDER_YES );
+				assert( fileSystem->IsFolder( details.slotName, "fs_game" ) == FOLDER_YES );
 			}
 			
 			idFile_SaveGame* file = new( TAG_SAVEGAMES ) idFile_SaveGame( filename, SAVEGAMEFILE_AUTO_DELETE );
@@ -655,7 +655,7 @@ int idSaveGameThread::DeleteFiles()
 	}
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( folder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( folder, "fs_game" ) == FOLDER_YES )
 	{
 		// get listing of all the files, but filter out below
 		idFileList* files = fileSystem->ListFilesTree( folder, "*.*" );
@@ -707,14 +707,14 @@ int idSaveGameThread::DeleteAll()
 	idStr saveFolder = "savegame";
 	int ret = ERROR_SUCCESS;
 	
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES )
 	{
 		idFileList* files = fileSystem->ListFilesTree( saveFolder, "/|*" );
 		// remove directories after files
 		for( int i = 0; i < files->GetNumFiles() && !callback->cancelled; i++ )
 		{
 			// contained files should always be first
-			if( fileSystem->IsFolder( files->GetFile( i ), "fs_savePath" ) == FOLDER_YES )
+			if( fileSystem->IsFolder( files->GetFile( i ), "fs_game" ) == FOLDER_YES )
 			{
 				fileSystem->RemoveDir( files->GetFile( i ) );
 			}
@@ -834,7 +834,7 @@ void Sys_SaveGameCheck( bool& exists, bool& autosaveExists )
 	const char* autosaveFolder = autosaveFolderStr.c_str();
 	const char* saveFolder = "savegame";
 	
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES )
 	{
 		idFileList* files = fileSystem->ListFiles( saveFolder, "/" );
 		const idStrList& fileList = files->GetList();
@@ -845,7 +845,7 @@ void Sys_SaveGameCheck( bool& exists, bool& autosaveExists )
 		{
 			const char* directory = va( "%s/%s", saveFolder, fileList[i].c_str() );
 			
-			if( fileSystem->IsFolder( directory, "fs_savePath" ) == FOLDER_YES )
+			if( fileSystem->IsFolder( directory, "fs_game" ) == FOLDER_YES )
 			{
 				exists = true;
 				

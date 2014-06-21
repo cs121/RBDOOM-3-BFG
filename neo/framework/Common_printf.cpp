@@ -425,7 +425,7 @@ void idCommonLocal::DumpWarnings()
 		return;
 	}
 	
-	warningFile = fileSystem->OpenFileWrite( "warnings.txt", "fs_savepath" );
+	warningFile = fileSystem->OpenFileWrite( "warnings.txt", "fs_game" );
 	if( warningFile )
 	{
 	
@@ -460,7 +460,7 @@ void idCommonLocal::DumpWarnings()
 #if defined(_WIN32) && !defined(_DEBUG)
 		// RB end
 		idStr	osPath;
-		osPath = fileSystem->RelativePathToOSPath( "warnings.txt", "fs_savepath" );
+		osPath = fileSystem->RelativePathToOSPath( "warnings.txt", "fs_game" );
 		WinExec( va( "Notepad.exe %s", osPath.c_str() ), SW_SHOW );
 #endif
 	}

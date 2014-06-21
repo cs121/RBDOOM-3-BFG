@@ -1143,7 +1143,7 @@ void idEntity::BecomeInactive( int flags )
 			}
 		}
 		// Becoming inactive automagically turns on motion blur again
-		// renderEntity.skipMotionBlur = false; //CHRIS
+		renderEntity.skipMotionBlur = false; //CHRIS
 		BecomeActive( TH_UPDATEVISUALS );
 	}
 }
@@ -3093,7 +3093,7 @@ bool idEntity::RunPhysics()
 		{
 			if( gameLocal.GetLocalClientNum() == ent->entityNumber )
 			{
-			//	renderEntity.skipMotionBlur = true; //CHRIS
+			renderEntity.skipMotionBlur = true; //CHRIS
 			}
 			if( useAbnormalVelocityHack )
 			{

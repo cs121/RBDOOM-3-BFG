@@ -110,7 +110,7 @@ bool M_WriteFile ( char const*	name, void*		source, int		length ) {
 	idFile *		handle = NULL;
 	int		count;
 
-	handle = fileSystem->OpenFileWrite( name, "fs_savepath" );
+	handle = fileSystem->OpenFileWrite( name, "fs_game" ); //CHRIS
 
 	if (handle == NULL )
 		return false;

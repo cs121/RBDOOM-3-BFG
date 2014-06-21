@@ -3303,8 +3303,8 @@ void idGameLocal::RunDebugInfo()
 					if (ent->health < 50) monstercolor = colorOrange;
 					if (ent->health < 20) monstercolor = colorRed;
 
-				gameRenderWorld->DrawText(va("monster: %s", ent->name.c_str()), entBounds.GetCenter()+1.25*up, 0.1f, monstercolor, axis, 1);
-				gameRenderWorld->DrawText(va("health: %d", ent->health), entBounds.GetCenter() + up, 0.1f, monstercolor, axis, 1);
+				gameRenderWorld->DrawText(va("monster: %s", ent->name.c_str()), entBounds.GetCenter()+2.25*up, 0.1f, monstercolor, axis, 1);
+				gameRenderWorld->DrawText(va("health: %d", ent->health), entBounds.GetCenter() + 2*up, 0.1f, monstercolor, axis, 1);
 				}
 			}
 			

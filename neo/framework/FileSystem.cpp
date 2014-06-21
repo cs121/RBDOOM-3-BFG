@@ -145,14 +145,14 @@ public:
 	virtual void			CreateOSPath( const char* OSPath );
 	virtual int				ReadFile( const char* relativePath, void** buffer, ID_TIME_T* timestamp );
 	virtual void			FreeFile( void* buffer );
-	virtual int				WriteFile( const char* relativePath, const void* buffer, int size, const char* basePath = "fs_savepath" );
+	virtual int				WriteFile( const char* relativePath, const void* buffer, int size, const char* basePath = "fs_game" ); //CHRIS
 	virtual void			RemoveFile( const char* relativePath );
 	virtual	bool			RemoveDir( const char* relativePath );
-	virtual bool			RenameFile( const char* relativePath, const char* newName, const char* basePath = "fs_savepath" );
+	virtual bool			RenameFile( const char* relativePath, const char* newName, const char* basePath = "fs_game" ); //CHRIS
 	virtual idFile* 		OpenFileReadFlags( const char* relativePath, int searchFlags, bool allowCopyFiles = true, const char* gamedir = NULL );
 	virtual idFile* 		OpenFileRead( const char* relativePath, bool allowCopyFiles = true, const char* gamedir = NULL );
 	virtual idFile* 		OpenFileReadMemory( const char* relativePath, bool allowCopyFiles = true, const char* gamedir = NULL );
-	virtual idFile* 		OpenFileWrite( const char* relativePath, const char* basePath = "fs_savepath" );
+	virtual idFile* 		OpenFileWrite( const char* relativePath, const char* basePath = "fs_game" ); //CHRIS
 	virtual idFile* 		OpenFileAppend( const char* relativePath, bool sync = false, const char* basePath = "fs_basepath" );
 	virtual idFile* 		OpenFileByMode( const char* relativePath, fsMode_t mode );
 	virtual idFile* 		OpenExplicitFileRead( const char* OSPath );
@@ -306,7 +306,7 @@ idCVar	idFileSystemLocal::fs_game( "fs_game", "", CVAR_SYSTEM | CVAR_INIT | CVAR
 idCVar  idFileSystemLocal::fs_game_base( "fs_game_base", "", CVAR_SYSTEM | CVAR_INIT | CVAR_SERVERINFO, "alternate mod path, searched after the main fs_game path, before the basedir" );
 
 idCVar	fs_basepath( "fs_basepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
-idCVar	fs_savepath( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" );
+//idCVar	fs_savepath( "fs_savepath", "", CVAR_SYSTEM | CVAR_INIT, "" ); //CHRIS
 idCVar	fs_resourceLoadPriority( "fs_resourceLoadPriority", "0", CVAR_SYSTEM , "if 1, open requests will be honored from resource files first; if 0, the resource files are checked after normal search paths" );
 idCVar	fs_enableBackgroundCaching( "fs_enableBackgroundCaching", "1", CVAR_SYSTEM , "if 1 allow the 360 to precache game files in the background" );
 
@@ -768,7 +768,7 @@ void idFileSystemLocal::EndLevelLoad()
 		idStrStatic< MAX_OSPATH > preloadName = manifestName;
 		preloadName.Insert( "maps/", 0 );
 		preloadName += ".preload";
-		idFile* fileOut = fileSystem->OpenFileWrite( preloadName, "fs_savepath" );
+		idFile* fileOut = fileSystem->OpenFileWrite( preloadName, "fs_game" ); //CHRIS
 		preloadList.WriteManifestToFile( fileOut );
 		delete fileOut;
 		
@@ -1181,7 +1181,7 @@ void idFileSystemLocal::WriteResourcePacks()
 	idStrList filesCommonToAllMaps( 16384 );		// files that are shared by all maps, will include startup files, renderprogs etc..
 	idPreloadManifest commonPreloads;				// preload entries that exist in all map preload files
 	
-	idStr path = RelativePathToOSPath( "maps/", "fs_savepath" );
+	idStr path = RelativePathToOSPath( "maps/", "fs_game" ); //CHRIS
 	
 	idStrList manifestFiles;
 	ListOSFiles( path, ".manifest", manifestFiles );
@@ -1385,7 +1385,7 @@ void idFileSystemLocal::WriteResourcePacks()
 	}
 	
 	// add  the new manifests just written
-	path = RelativePathToOSPath( "maps", "fs_savepath" );
+	path = RelativePathToOSPath( "maps", "fs_game" ); //CHRIS
 	ListOSFiles( path, "*.preload", work );
 	for( int i = 0; i < work.Num(); i++ )
 	{
@@ -1866,7 +1866,7 @@ const char* idFileSystemLocal::RelativePathToOSPath( const char* relativePath, c
 	const char* path = cvarSystem->GetCVarString( basePath );
 	if( !path[0] )
 	{
-		path = fs_savepath.GetString();
+		path = fs_game.GetString(); //CHRIS
 	}
 	return BuildOSPath( path, gameFolder, relativePath );
 }
@@ -1893,7 +1893,7 @@ void idFileSystemLocal::RemoveFile( const char* relativePath )
 		// RB end
 	}
 	
-	OSPath = BuildOSPath( fs_savepath.GetString(), gameFolder, relativePath );
+	OSPath = BuildOSPath( fs_game.GetString(), gameFolder, relativePath ); //CHRIS
 	
 	// RB begin
 #if defined(_WIN32)
@@ -1912,9 +1912,9 @@ idFileSystemLocal::RemoveDir
 bool idFileSystemLocal::RemoveDir( const char* relativePath )
 {
 	bool success = true;
-	if( fs_savepath.GetString()[0] )
+	if( fs_game.GetString()[0] ) //CHRIS
 	{
-		success &= Sys_Rmdir( BuildOSPath( fs_savepath.GetString(), relativePath ) );
+		success &= Sys_Rmdir( BuildOSPath( fs_game.GetString(), relativePath ) ); //CHRIS
 	}
 	success &= Sys_Rmdir( BuildOSPath( fs_basepath.GetString(), relativePath ) );
 	return success;
@@ -2127,7 +2127,7 @@ bool idFileSystemLocal::RenameFile( const char* relativePath, const char* newNam
 	const char* path = cvarSystem->GetCVarString( basePath );
 	if( !path[0] )
 	{
-		path = fs_savepath.GetString();
+		path = fs_game.GetString(); //CHRIS
 	}
 	
 	idStr oldOSPath = BuildOSPath( path, gameFolder, relativePath );
@@ -3018,9 +3018,9 @@ void idFileSystemLocal::SetupGameDirectories( const char* gameName )
 		AddGameDirectory( fs_basepath.GetString(), gameName );
 	}
 	// setup savepath
-	if( fs_savepath.GetString()[0] )
+	if( fs_game.GetString()[0] ) //CHRIS
 	{
-		AddGameDirectory( fs_savepath.GetString(), gameName );
+		AddGameDirectory( fs_game.GetString(), gameName ); //CHRIS
 	}
 }
 
@@ -3117,7 +3117,7 @@ void idFileSystemLocal::Init()
 	// line variable sets don't happen until after the filesystem
 	// has already been initialized
 	common->StartupVariable( "fs_basepath" );
-	common->StartupVariable( "fs_savepath" );
+	//common->StartupVariable( "fs_savepath" );
 	common->StartupVariable( "fs_game" );
 	common->StartupVariable( "fs_game_base" );
 	common->StartupVariable( "fs_copyfiles" );
@@ -3126,11 +3126,12 @@ void idFileSystemLocal::Init()
 	{
 		fs_basepath.SetString( Sys_DefaultBasePath() );
 	}
-	if( fs_savepath.GetString()[0] == '\0' )
-	{
-		fs_savepath.SetString( Sys_DefaultSavePath() );
-	}
-	
+	//if( fs_savepath.GetString()[0] == '\0' )
+	//{
+	//	fs_savepath.SetString( Sys_DefaultSavePath() );
+	//}
+
+	//CHRIS
 	// try to start up normally
 	Startup();
 	
@@ -3417,7 +3418,7 @@ idFile* idFileSystemLocal::OpenFileReadFlags( const char* relativePath, int sear
 			
 				idStr copypath;
 				idStr name;
-				copypath = BuildOSPath( fs_savepath.GetString(), searchPaths[sp].gamedir, relativePath );
+				copypath = BuildOSPath( fs_game.GetString(), searchPaths[sp].gamedir, relativePath ); //CHRIS
 				netpath.ExtractFileName( name );
 				copypath.StripFilename();
 				copypath += PATHSEPARATOR_STR;
@@ -3565,7 +3566,7 @@ idFile* idFileSystemLocal::OpenFileWrite( const char* relativePath, const char* 
 	path = cvarSystem->GetCVarString( basePath );
 	if( !path[0] )
 	{
-		path = fs_savepath.GetString();
+		path = fs_game.GetString();
 	}
 	
 	OSpath = BuildOSPath( path, gameFolder, relativePath );
@@ -3725,7 +3726,7 @@ idFile* idFileSystemLocal::OpenFileAppend( const char* relativePath, bool sync, 
 	path = cvarSystem->GetCVarString( basePath );
 	if( !path[0] )
 	{
-		path = fs_savepath.GetString();
+		path = fs_game.GetString(); //CHRIS
 	}
 	
 	OSpath = BuildOSPath( path, gameFolder, relativePath );

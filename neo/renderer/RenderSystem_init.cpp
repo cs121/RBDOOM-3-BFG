@@ -1443,7 +1443,7 @@ void R_StencilShot()
 	buffer[15] = height >> 8;
 	buffer[16] = 24;	// pixel size
 	
-	fileSystem->WriteFile( "screenshots/stencilShot.tga", buffer.Ptr(), c, "fs_savepath" );
+	fileSystem->WriteFile( "screenshots/stencilShot.tga", buffer.Ptr(), c, "fs_game" );
 }
 
 

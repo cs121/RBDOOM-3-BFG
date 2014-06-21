@@ -140,19 +140,19 @@ public:
 	virtual void			FreeFile( void* buffer ) = 0;
 	// Writes a complete file, will create any needed subdirectories.
 	// Returns the length of the file, or -1 on failure.
-	virtual int				WriteFile( const char* relativePath, const void* buffer, int size, const char* basePath = "fs_savepath" ) = 0;
+	virtual int				WriteFile( const char* relativePath, const void* buffer, int size, const char* basePath = "fs_game" ) = 0; //CHRIS
 	// Removes the given file.
 	virtual void			RemoveFile( const char* relativePath ) = 0;
 	// Removes the specified directory.
 	virtual	bool			RemoveDir( const char* relativePath ) = 0;
 	// Renames a file, taken from idTech5 (minus the fsPath_t)
-	virtual bool			RenameFile( const char* relativePath, const char* newName, const char* basePath = "fs_savepath" ) = 0;
+	virtual bool			RenameFile( const char* relativePath, const char* newName, const char* basePath = "fs_game" ) = 0; //CHRIS
 	// Opens a file for reading.
 	virtual idFile* 		OpenFileRead( const char* relativePath, bool allowCopyFiles = true, const char* gamedir = NULL ) = 0;
 	// Opens a file for reading, reads the file completely in memory and returns an idFile_Memory obj.
 	virtual idFile* 		OpenFileReadMemory( const char* relativePath, bool allowCopyFiles = true, const char* gamedir = NULL ) = 0;
 	// Opens a file for writing, will create any needed subdirectories.
-	virtual idFile* 		OpenFileWrite( const char* relativePath, const char* basePath = "fs_savepath" ) = 0;
+	virtual idFile* 		OpenFileWrite( const char* relativePath, const char* basePath = "fs_game" ) = 0; //CHRIS
 	// Opens a file for writing at the end.
 	virtual idFile* 		OpenFileAppend( const char* filename, bool sync = false, const char* basePath = "fs_basepath" ) = 0;
 	// Opens a file for reading, writing, or appending depending on the value of mode.

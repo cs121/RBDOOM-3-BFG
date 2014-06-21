@@ -143,8 +143,8 @@ idPreloadManifest::WriteManifestFile
 ========================
 */
 void idPreloadManifest::WriteManifest( const char* fileName )
-{
-	idFile* file = fileSystem->OpenFileWrite( fileName, "fs_savepath" );
+{ 
+	idFile* file = fileSystem->OpenFileWrite( fileName, "fs_game" ); //CHRIS
 	if( file != NULL )
 	{
 		WriteManifestToFile( file );

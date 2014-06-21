@@ -469,7 +469,7 @@ bool Sys_SaveGameProfileCheck()
 	bool exists = false;
 	const char* saveFolder = "savegame";
 	
-	if( fileSystem->IsFolder( saveFolder, "fs_savePath" ) == FOLDER_YES )
+	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES )
 	{
 		idFileList* files = fileSystem->ListFiles( saveFolder, SAVEGAME_PROFILE_FILENAME );
 		const idStrList& fileList = files->GetList();
