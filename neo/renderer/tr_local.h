@@ -959,7 +959,8 @@ extern idCVar r_useShadowDepthBounds;		// use depth bounds test on individual sh
 // RB begin
 extern idCVar r_useShadowMapping;			// use shadow mapping instead of stencil shadows
 extern idCVar r_useHalfLambertLighting;		// use Half-Lambert lighting instead of classic Lambert
-extern idCVar r_useRimLighting;				// use Half-Lambert lighting instead of classic Lambert
+extern idCVar r_useRimLighting;				// use rim lighting 
+extern idCVar r_useAmbientLighting;			// use ambient lighting
 // RB end
 
 extern idCVar r_skipStaticInteractions;		// skip interactions created at level load

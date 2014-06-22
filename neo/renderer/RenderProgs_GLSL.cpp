@@ -557,6 +557,11 @@ idStr StripDeadCode( const idStr& in, const char* name, const idStrList& compile
 	{
 		src.AddDefine("USE_RIM_LIGHTING");
 	}
+
+	if (r_useAmbientLighting.GetBool()) //CHRIS
+	{
+		src.AddDefine("USE_AMBIENT_LIGHTING");
+	}
 	
 	idList< idCGBlock > blocks;
 	

@@ -152,7 +152,8 @@ idCVar r_useLightDepthBounds( "r_useLightDepthBounds", "1", CVAR_RENDERER | CVAR
 idCVar r_useShadowDepthBounds( "r_useShadowDepthBounds", "1", CVAR_RENDERER | CVAR_BOOL, "use depth bounds test on individual shadow volumes to reduce shadow fill" );
 // RB begin
 idCVar r_useHalfLambertLighting( "r_useHalfLambertLighting", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_ARCHIVE, "use Half-Lambert lighting instead of classic Lambert, requires reloadShaders" );
-idCVar r_useRimLighting("r_useRimLighting", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_ARCHIVE, "use Rim lighting, requires reloadShaders");
+idCVar r_useRimLighting("r_useRimLighting", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_ARCHIVE, "use rim lighting, requires reloadShaders");
+idCVar r_useAmbientLighting("r_useAmbientLighting", "1", CVAR_RENDERER | CVAR_BOOL | CVAR_ARCHIVE, "use constant ambient lighting, requires reloadShaders");
 
 // RB end
 
