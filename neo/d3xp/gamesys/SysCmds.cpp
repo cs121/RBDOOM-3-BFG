@@ -672,12 +672,13 @@ Cmd_Say
 static void Cmd_Say( bool team, const idCmdArgs& args )
 {
 	const char* cmd = team ? "sayTeam" : "say" ;
-	
+	/*
 	if( !common->IsMultiplayer() )
 	{
 		gameLocal.Printf( "%s can only be used in a multiplayer game\n", cmd );
 		return;
 	}
+	*/
 	
 	if( args.Argc() < 2 )
 	{

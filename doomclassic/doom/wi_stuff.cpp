@@ -252,7 +252,7 @@ const wbplayerstruct_t* plrs;  // ::g->wbs->plyr[]
 
 void localCalculateAchievements(bool epComplete)
 {
-
+#if 0
 	if( !common->IsMultiplayer() ) {
 
 			player_t  *player = &::g->players[::g->consoleplayer];
@@ -262,6 +262,7 @@ void localCalculateAchievements(bool epComplete)
 
 
 	}
+#endif
 }
 
 // slam background
@@ -778,7 +779,7 @@ void WI_initDeathmatchStats(void)
     
     WI_initAnimatedBack();
 
-	if ( common->IsMultiplayer() ) {
+//	if ( common->IsMultiplayer() ) {
 		localCalculateAchievements(false);
 
 		/* JAF PS3 
@@ -790,7 +791,7 @@ void WI_initDeathmatchStats(void)
 			gameLocal->liveSession.GetDMSession().BeginEndLevel();
 		}
 		*/
-	}
+//	}
 
 	DoomLib::ShowXToContinue( true );
 }

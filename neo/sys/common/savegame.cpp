@@ -262,7 +262,7 @@ int idSaveGameThread::Save()
 		if( ret == ERROR_SUCCESS )
 		{
 			// Remove the old file
-			if( !fileSystem->RenameFile( tempFileName, fileName, "fs_game" ) ) //CHRIS
+			if( !fileSystem->RenameFile( tempFileName, fileName, "" ) ) //CHRIS
 			{
 				idLib::Warning( "Could not start to rename temporary file %s to %s.", tempFileName.c_str(), fileName.c_str() );
 			}
@@ -312,7 +312,7 @@ int idSaveGameThread::Load()
 	
 	saveFolder.AppendPath( callback->directory );
 	
-	if( fileSystem->IsFolder( saveFolder, "fs_game" ) != FOLDER_YES ) //CHRIS
+	if( fileSystem->IsFolder( saveFolder, "" ) != FOLDER_YES ) //CHRIS
 	{
 		callback->errorCode = SAVEGAME_E_FOLDER_NOT_FOUND;
 		return -1;
@@ -428,7 +428,7 @@ int idSaveGameThread::Delete()
 	saveFolder.AppendPath( callback->directory );
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES ) //CHRIS
+	if( fileSystem->IsFolder( saveFolder, "" ) == FOLDER_YES ) //CHRIS
 	{
 		idFileList* files = fileSystem->ListFilesTree( saveFolder, "/|*" );
 		for( int i = 0; i < files->GetNumFiles() && !callback->cancelled; i++ )
@@ -466,7 +466,7 @@ int idSaveGameThread::Enumerate()
 	callback->detailList.Clear();
 	
 	int ret = ERROR_SUCCESS;
-	if( fileSystem->IsFolder( saveFolder, "fs_game" ) == FOLDER_YES ) //CHRIS
+	if( fileSystem->IsFolder( saveFolder, "" ) == FOLDER_YES ) //CHRIS
 	{
 		idFileList* files = fileSystem->ListFilesTree( saveFolder, SAVEGAME_DETAILS_FILENAME );
 		const idStrList& fileList = files->GetList();

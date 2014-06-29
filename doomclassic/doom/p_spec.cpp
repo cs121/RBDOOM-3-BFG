@@ -1036,6 +1036,7 @@ void P_PlayerInSpecialSector (player_t* player)
 
 		if ( !::g->demoplayback && ( ::g->usergame && !::g->netgame ) ) {
 			// DHM - Nerve :: Let's give achievements in real time in Doom 2
+#if 0
 			if ( !common->IsMultiplayer() ) {
 				switch( DoomLib::GetGameSKU() ) {
 					case GAME_SKU_DOOM1_BFG: {
@@ -1059,6 +1060,7 @@ void P_PlayerInSpecialSector (player_t* player)
 					}
 				}
 			}
+#endif
 		}
 
 

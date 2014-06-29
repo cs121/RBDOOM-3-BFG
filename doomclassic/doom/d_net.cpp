@@ -747,7 +747,7 @@ bool TryRunTics ( idUserCmdMgr * userCmdMgr )
 		lagtime = ::g->trt_entertic - ::g->lastnettic;
 
 		// Detect if a client has stopped sending updates, remove them from the game after 5 secs.
-		if ( common->IsMultiplayer() && (!::g->demoplayback && ::g->netgame) && lagtime >= TICRATE ) {
+		if ( /* common->IsMultiplayer() && */ (!::g->demoplayback && ::g->netgame) && lagtime >= TICRATE ) {
 
 			if ( lagtime > NET_TIMEOUT ) {
 

@@ -3018,10 +3018,12 @@ void idFileSystemLocal::SetupGameDirectories( const char* gameName )
 		AddGameDirectory( fs_basepath.GetString(), gameName );
 	}
 	// setup savepath
+#if 0
 	if( fs_game.GetString()[0] ) //CHRIS
 	{
 		AddGameDirectory( fs_game.GetString(), gameName ); //CHRIS
 	}
+#endif
 }
 
 /*

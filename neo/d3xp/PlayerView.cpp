@@ -472,7 +472,7 @@ void idPlayerView::SingleView( const renderView_t* view, idMenuHandler_HUD* hudM
 	}
 	
 	// draw screen blobs
-	if( !pm_thirdPerson.GetBool() && !g_skipViewEffects.GetBool() )
+	if( !g_skipViewEffects.GetBool() ) //CHRIS
 	{
 		if( !player->spectating )
 		{
@@ -484,7 +484,7 @@ void idPlayerView::SingleView( const renderView_t* view, idMenuHandler_HUD* hudM
 					continue;
 				}
 				
-				blob->y += blob->driftAmount;
+				blob->y += 3* blob->driftAmount; //CHRIS
 				
 				float	fade = ( float )( blob->finishTime - gameLocal.fast.time ) / ( blob->finishTime - blob->startFadeTime );
 				if( fade > 1.0f )
@@ -1036,7 +1036,7 @@ FullscreenFX_Helltime::Active
 bool FullscreenFX_Helltime::Active()
 {
 
-	if( gameLocal.inCinematic || common->IsMultiplayer() )
+	if( gameLocal.inCinematic )
 	{
 		return false;
 	}
@@ -1170,10 +1170,6 @@ FullscreenFX_Multiplayer::Active
 bool FullscreenFX_Multiplayer::Active()
 {
 
-	if( !common->IsMultiplayer() && g_testMultiplayerFX.GetInteger() == -1 )
-	{
-		return false;
-	}
 	
 	if( DetermineLevel() >= 0 )
 	{
@@ -1514,12 +1510,6 @@ void FullscreenFX_DoubleVision::HighQuality()
 	// carry red tint if in berserk mode
 	idVec4 color( 1.0f, 1.0f, 1.0f, 1.0f );
 	if( gameLocal.fast.time < player->inventory.powerupEndTime[ BERSERK ] )
-	{
-		color.y = 0.0f;
-		color.z = 0.0f;
-	}
-	
-	if( ( !common->IsMultiplayer() && gameLocal.fast.time < player->inventory.powerupEndTime[ HELLTIME ] ) || gameLocal.fast.time < player->inventory.powerupEndTime[ INVULNERABILITY ] )
 	{
 		color.y = 0.0f;
 		color.z = 0.0f;

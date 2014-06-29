@@ -2429,10 +2429,13 @@ idActor::Gib
 void idActor::Gib( const idVec3& dir, const char* damageDefName )
 {
 	// no gibbing in multiplayer - by self damage or by moving objects
+#if 0
 	if( common->IsMultiplayer() )
 	{
 		return;
 	}
+#endif //CHRIS
+
 	// only gib once
 	if( gibbed )
 	{

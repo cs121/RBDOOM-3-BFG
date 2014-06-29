@@ -669,7 +669,7 @@ bool idProjectile::Collide( const trace_t& collision, const idVec3& velocity )
 	}
 	
 	// MP: projectiles open doors
-	if( common->IsMultiplayer() && ent->IsType( idDoor::Type ) && !static_cast< idDoor* >( ent )->IsOpen() && !ent->spawnArgs.GetBool( "no_touch" ) )
+	if( ent->IsType( idDoor::Type ) && !static_cast< idDoor* >( ent )->IsOpen() && !ent->spawnArgs.GetBool( "no_touch" ) )
 	{
 		if( !common->IsClient() )
 		{
@@ -765,7 +765,7 @@ bool idProjectile::Collide( const trace_t& collision, const idVec3& velocity )
 			
 			// Only handle the server's own attacks here. Attacks by other players on the server occur through
 			// reliable messages.
-			if( !common->IsMultiplayer() || common->IsClient() || ( common->IsServer() && owner.GetEntityNum() == gameLocal.GetLocalClientNum() ) || ( common->IsServer() && !isHitscan ) )
+			if( common->IsClient() || ( common->IsServer() && owner.GetEntityNum() == gameLocal.GetLocalClientNum() ) || ( common->IsServer() && !isHitscan ) )
 			{
 				ent->Damage( this, owner.GetEntity(), dir, damageDefName, damageScale, CLIPMODEL_ID_TO_JOINT_HANDLE( collision.c.id ) );
 			}
@@ -802,7 +802,7 @@ bool idProjectile::Collide( const trace_t& collision, const idVec3& velocity )
 		idPlayer* player = static_cast<idPlayer*>( owner.GetEntity() );
 		int kills = player->GetProjectileKills();
 		
-		if( kills >= 2 && common->IsMultiplayer() && strstr( GetName(), "projectile_rocket" ) != 0 )
+		if( kills >= 2  && strstr( GetName(), "projectile_rocket" ) != 0 )
 		{
 			player->GetAchievementManager().EventCompletesAchievement( ACHIEVEMENT_MP_KILL_2_GUYS_IN_ROOM_WITH_BFG );
 		}
@@ -1701,7 +1701,7 @@ idProjectile::QueueToSimulate
 */
 void idProjectile::QueueToSimulate( int startTime )
 {
-	assert( common->IsMultiplayer() && common->IsServer() );
+	assert( common->IsServer() );
 	
 	for( int i = 0; i < MAX_SIMULATED_PROJECTILES; i++ )
 	{

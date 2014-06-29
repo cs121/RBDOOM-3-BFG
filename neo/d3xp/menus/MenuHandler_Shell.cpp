@@ -681,10 +681,10 @@ void idMenuHandler_Shell::ActivateMenu( bool show )
 					isDead = true;
 				}
 				
-				if( isDead && !common->IsMultiplayer() )
-				{
-					return;
-				}
+				//if( isDead && !common->IsMultiplayer() )
+				//{
+				//	return;
+				//}
 			}
 		}
 	}

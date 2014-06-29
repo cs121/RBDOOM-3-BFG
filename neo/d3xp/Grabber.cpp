@@ -508,7 +508,7 @@ int idGrabber::Update( idPlayer* player, bool hide )
 			abort = true;
 		}
 		// Not in multiplayer :: Pressing "reload" lets you carefully drop an item
-		if( !common->IsMultiplayer() && !abort && ( player->usercmd.impulseSequence != oldImpulseSequence ) && ( player->usercmd.impulse == IMPULSE_13 ) )
+		if( /* !common->IsMultiplayer() && */ !abort && ( player->usercmd.impulseSequence != oldImpulseSequence ) && ( player->usercmd.impulse == IMPULSE_13 ) )
 		{
 			abort = true;
 		}
@@ -591,15 +591,15 @@ int idGrabber::Update( idPlayer* player, bool hide )
 	// check backwards server time in multiplayer
 	bool allow = true;
 	
-	if( common->IsMultiplayer() )
-	{
+	//if( common->IsMultiplayer() )
+	//{
 	
 		// if we've marched backwards
 		if( gameLocal.slow.time < startDragTime )
 		{
 			allow = false;
 		}
-	}
+	//}
 	
 	
 	// if there is an entity selected for dragging

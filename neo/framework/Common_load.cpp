@@ -425,10 +425,10 @@ void idCommonLocal::ExecuteMapChange()
 	cvarSystem->SetCVarFloat( "r_znear", 3.0f );
 	
 	// reset all cheat cvars for a multiplayer game
-	if( IsMultiplayer() )
-	{
+	//if( IsMultiplayer() )
+	//{
 		cvarSystem->ResetFlaggedVariables( CVAR_CHEAT );
-	}
+	//}
 	
 	int start = Sys_Milliseconds();
 	
@@ -508,21 +508,22 @@ void idCommonLocal::ExecuteMapChange()
 		soundSystem->Preload( manifest );
 		game->Preload( manifest );
 	}
-	
-	if( common->IsMultiplayer() )
-	{
+
+//	if( common->IsMultiplayer() )
+//	{
 		// In multiplayer, make sure the player is either 60Hz or 120Hz
 		// to avoid potential issues.
 		const float mpEngineHz = ( com_engineHz.GetFloat() < 90.0f ) ? 60.0f : 120.0f;
 		com_engineHz_denominator = 100LL * mpEngineHz;
 		com_engineHz_latched = mpEngineHz;
-	}
-	else
-	{
-		// allow com_engineHz to be changed between map loads
-		com_engineHz_denominator = 100LL * com_engineHz.GetFloat();
-		com_engineHz_latched = com_engineHz.GetFloat();
-	}
+//	}
+//	else
+//	{
+//		// allow com_engineHz to be changed between map loads
+//		com_engineHz_denominator = 100LL * com_engineHz.GetFloat();
+//		com_engineHz_latched = com_engineHz.GetFloat();
+//	}
+		//CHRIS
 	
 	// note any warning prints that happen during the load process
 	common->ClearWarnings( currentMapName );
@@ -552,6 +553,7 @@ void idCommonLocal::ExecuteMapChange()
 	}
 	else
 	{
+		/*
 		if( !IsMultiplayer() )
 		{
 			assert( game->GetLocalClientNum() == 0 );
@@ -559,6 +561,7 @@ void idCommonLocal::ExecuteMapChange()
 			assert( matchParameters.gameMap == GAME_MAP_SINGLEPLAYER );
 			game->SetPersistentPlayerInfo( 0, mapSpawnData.persistentPlayerInfo );
 		}
+		*/
 		game->SetServerInfo( matchParameters.serverInfo );
 		game->InitFromNewMap( fullMapName, renderWorld, soundWorld, matchParameters.gameMode, Sys_Milliseconds() );
 	}
@@ -608,7 +611,7 @@ void idCommonLocal::ExecuteMapChange()
 	uiManager->EndLevelLoad( currentMapName );
 	fileSystem->EndLevelLoad();
 	
-	if( !mapSpawnData.savegameFile && !IsMultiplayer() )
+	if( !mapSpawnData.savegameFile /*&& !IsMultiplayer() */ )
 	{
 		common->Printf( "----- Running initial game frames -----\n" );
 		
@@ -845,13 +848,13 @@ bool idCommonLocal::SaveGame( const char* saveName )
 	{
 		return false;
 	}
-	
+#if 0	
 	if( IsMultiplayer() )
 	{
 		common->Printf( "Can't save during net play.\n" );
 		return false;
 	}
-	
+#endif 	
 	if( mapSpawnData.savegameFile != NULL )
 	{
 		return false;
@@ -945,6 +948,7 @@ idCommonLocal::LoadGame
 */
 bool idCommonLocal::LoadGame( const char* saveName )
 {
+#if 0
 	if( IsMultiplayer() )
 	{
 		common->Printf( "Can't load during net play.\n" );
@@ -954,6 +958,7 @@ bool idCommonLocal::LoadGame( const char* saveName )
 		}
 		return false;
 	}
+#endif
 	
 	// RB begin
 #if defined(USE_DOOMCLASSIC)

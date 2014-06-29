@@ -2903,11 +2903,11 @@ idMultiplayerGame::DropWeapon_f
 */
 void idMultiplayerGame::DropWeapon_f( const idCmdArgs& args )
 {
-	if( !common->IsMultiplayer() )
-	{
-		common->Printf( "clientDropWeapon: only valid in multiplayer\n" );
-		return;
-	}
+	//if( !common->IsMultiplayer() )
+	//{
+	//	common->Printf( "clientDropWeapon: only valid in multiplayer\n" );
+	//	return;
+	//} //CHRIS
 	idBitMsg outMsg;
 	session->GetActingGameStateLobbyBase().SendReliableToHost( GAME_RELIABLE_MESSAGE_DROPWEAPON, outMsg );
 }
@@ -3440,12 +3440,14 @@ void idMultiplayerGame::VoiceChat( const idCmdArgs& args, bool team )
 	const idDict*		spawnArgs;
 	const idKeyValue*	keyval;
 	int					index;
-	
+#if 0
 	if( !common->IsMultiplayer() )
 	{
 		common->Printf( "clientVoiceChat: only valid in multiplayer\n" );
 		return;
 	}
+#endif 
+	//CHRIS
 	if( args.Argc() != 2 )
 	{
 		common->Printf( "clientVoiceChat: bad args\n" );

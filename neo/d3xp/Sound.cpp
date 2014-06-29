@@ -164,8 +164,8 @@ void idSound::Event_Trigger( idEntity* activator )
 	}
 	else
 	{
-		if( common->IsMultiplayer() )
-		{
+		//if( common->IsMultiplayer() )
+		//{
 			if( refSound.referenceSound && ( gameLocal.time < playingUntilTime ) )
 			{
 				DoSound( false );
@@ -174,18 +174,8 @@ void idSound::Event_Trigger( idEntity* activator )
 			{
 				DoSound( true );
 			}
-		}
-		else
-		{
-			if( refSound.referenceSound && refSound.referenceSound->CurrentlyPlaying() )
-			{
-				DoSound( false );
-			}
-			else
-			{
-				DoSound( true );
-			}
-		}
+		//}
+	
 	}
 }
 

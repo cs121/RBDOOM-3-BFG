@@ -737,7 +737,7 @@ ID_INLINE SetTimeState::SetTimeState( int timeGroup )
 
 ID_INLINE void SetTimeState::PushState( int timeGroup )
 {
-
+#if 0
 	// Don't mess with time in Multiplayer
 	if( !common->IsMultiplayer() )
 	{
@@ -767,6 +767,8 @@ ID_INLINE void SetTimeState::PushState( int timeGroup )
 		// set correct time
 		gameLocal.SelectTimeGroup( timeGroup );
 	}
+#endif //CHRIS
+
 }
 
 ID_INLINE SetTimeState::~SetTimeState()

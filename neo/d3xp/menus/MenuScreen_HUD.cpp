@@ -222,7 +222,7 @@ void idMenuScreen_HUD::UpdateHealthArmor( idPlayer* player )
 	{
 		return;
 	}
-	
+#if 0
 	if( common->IsMultiplayer() )
 	{
 		playerInfo->GetSprite()->SetYPos( 20.0f );
@@ -231,6 +231,8 @@ void idMenuScreen_HUD::UpdateHealthArmor( idPlayer* player )
 	{
 		playerInfo->GetSprite()->SetYPos( 0.0f );
 	}
+#endif
+	playerInfo->GetSprite()->SetYPos(0.0f);
 	
 	idSWFTextInstance* txtVal = playerInfo->GetNestedText( "health", "txtVal" );
 	if( txtVal != NULL )
@@ -320,25 +322,7 @@ void idMenuScreen_HUD::UpdateStamina( idPlayer* player )
 	idSWFSpriteInstance* stamSprite = stamina->GetSprite();
 	if( stamSprite != NULL )
 	{
-	
-		if( common->IsMultiplayer() )
-		{
 			stamSprite->SetVisible( false );
-		}
-		else
-		{
-			float max_stamina = pm_stamina.GetFloat();
-			if( !max_stamina )
-			{
-				stamSprite->SetVisible( false );
-			}
-			else
-			{
-				stamSprite->SetVisible( true );
-				float staminaPercent = idMath::Ftoi( 100.0f * player->stamina / max_stamina );
-				stamSprite->StopFrame( staminaPercent + 1 );
-			}
-		}
 	}
 }
 
@@ -436,14 +420,14 @@ void idMenuScreen_HUD::UpdateWeaponInfo( idPlayer* player )
 		
 			ammoInfo->SetVisible( true );
 			ammoInfo->StopFrame( 1 );
-			if( common->IsMultiplayer() )
-			{
+			//if( common->IsMultiplayer() )
+			//{
 				ammoInfo->SetYPos( 20.0f );
-			}
-			else
-			{
+			//}
+			//else
+			//{
 				ammoInfo->SetYPos( 0.0f );
-			}
+			//}
 			idSWFSpriteInstance* txtClipSprite = ammoInfo->GetScriptObject()->GetNestedSprite( "info", "clip" );
 			idSWFSpriteInstance* clipLowSprite = ammoInfo->GetScriptObject()->GetNestedSprite( "info", "lowAmmo" );
 			idSWFSpriteInstance* clipEmptySprite = ammoInfo->GetScriptObject()->GetNestedSprite( "info", "clipEmpty" );
@@ -509,14 +493,14 @@ void idMenuScreen_HUD::UpdateWeaponInfo( idPlayer* player )
 			ammoInfo->SetVisible( true );
 			ammoInfo->StopFrame( 2 );
 			
-			if( common->IsMultiplayer() )
-			{
+			//if( common->IsMultiplayer() )
+			//{
 				ammoInfo->SetYPos( 20.0f );
-			}
-			else
-			{
-				ammoInfo->SetYPos( 0.0f );
-			}
+			//}
+			//else
+			//{
+			//	ammoInfo->SetYPos( 0.0f );
+			//}
 			
 			idSWFTextInstance* txtAmmo = ammoInfo->GetScriptObject()->GetNestedText( "info", "txtVal" );
 			
@@ -538,10 +522,10 @@ idMenuScreen_HUD::GiveWeapon
 void idMenuScreen_HUD::GiveWeapon( idPlayer* player, int weaponIndex )
 {
 
-	if( common->IsMultiplayer() )
-	{
-		return;
-	}
+//	if( common->IsMultiplayer() )
+//	{
+	//	return;
+//	}
 	
 	const char* weapnum = va( "def_weapon%d", weaponIndex );
 	const char* weap = player->spawnArgs.GetString( weapnum );
@@ -1034,8 +1018,8 @@ void idMenuScreen_HUD::UpdateWeaponStates( idPlayer* player, bool weaponChanged 
 	}
 	
 	idStr displayName;
-	if( common->IsMultiplayer() )
-	{
+	//if( common->IsMultiplayer() )
+	//{
 	
 		if( !mpWeapons || player->GetIdealWeapon() == 0 )
 		{
@@ -1188,87 +1172,7 @@ void idMenuScreen_HUD::UpdateWeaponStates( idPlayer* player, bool weaponChanged 
 					botValid->SetVisible( true );
 				}
 			}
-		}
-		
-	}
-	else
-	{
-	
-		bool hasWeapons = false;
-		const idMaterial* hudIcon = NULL;
-		
-		for( int i = 0; i < MAX_WEAPONS; i++ )
-		{
-			const char* weapnum = va( "def_weapon%d", i );
-			int weapstate = 0;
-			if( player->inventory.weapons & ( 1 << i ) )
-			{
-				hasWeapons = true;
-				const char* weap = player->spawnArgs.GetString( weapnum );
-				if( weap != NULL && *weap != '\0' )
-				{
-					weapstate++;
-				}
-				if( player->GetIdealWeapon() == i )
-				{
-				
-					const idDeclEntityDef* weaponDef = gameLocal.FindEntityDef( weap, false );
-					if( weaponDef != NULL )
-					{
-						hudIcon = declManager->FindMaterial( weaponDef->dict.GetString( "hudIcon" ), false );
-						displayName = weaponDef->dict.GetString( "display_name" );
-					}
-					
-					weapstate++;
-				}
-			}
-			
-			idSWFSpriteInstance* pill = weaponPills->GetNestedSprite( va( "pill%d", i ) );
-			if( pill )
-			{
-				pill->StopFrame( weapstate + 1 );
-			}
-		}
-		
-		if( !hasWeapons )
-		{
-			weaponPills->GetSprite()->SetVisible( false );
-		}
-		else
-		{
-			weaponPills->GetSprite()->SetVisible( true );
-		}
-		
-		if( weaponImg )
-		{
-			if( weaponChanged && hudIcon != NULL )
-			{
-				weaponImg->SetVisible( true );
-				weaponImg->PlayFrame( 2 );
-				
-				idSWFSpriteInstance* topImg = weaponImg->GetScriptObject()->GetNestedSprite( "topImg" );
-				idSWFSpriteInstance* botImg = weaponImg->GetScriptObject()->GetNestedSprite( "botImg" );
-				
-				if( topImg != NULL && botImg != NULL )
-				{
-					topImg->SetMaterial( hudIcon );
-					botImg->SetMaterial( hudIcon );
-				}
-				
-				/*if ( weaponName && weaponName->GetSprite() ) {
-					weaponName->GetSprite()->SetVisible( true );
-					weaponName->GetSprite()->PlayFrame( 2 );
-				
-					idSWFTextInstance * txtVal = weaponName->GetNestedText( "info", "txtVal" );
-					if ( txtVal != NULL ) {
-						txtVal->SetText( displayName );
-						txtVal->SetStrokeInfo( true, 0.6f, 2.0f );
-					}
-				}*/
-			}
-		}
-	}
-	
+		}	
 }
 
 /*

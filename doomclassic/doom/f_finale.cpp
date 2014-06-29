@@ -231,6 +231,8 @@ bool finaleButtonPressed = false;
 bool startButtonPressed = false;
 qboolean F_Responder (event_t *event)
 {
+	return false;
+#if 0
 	if( !common->IsMultiplayer() && event->type == ev_keydown && event->data1 == KEY_ESCAPE ) {
 		startButtonPressed = true;
 		return true;
@@ -240,6 +242,7 @@ qboolean F_Responder (event_t *event)
 		return F_CastResponder (event);
 
     return false;
+#endif //CHRIS
 }
 
 

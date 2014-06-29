@@ -5899,15 +5899,16 @@ void idPlayer::UpdateFlashlight()
 	
 	// Don't update the flashlight if dead in MP.
 	// Otherwise you can see a floating flashlight worldmodel near player's skeletons.
-	if( common->IsMultiplayer() )
-	{
+	//if( common->IsMultiplayer() )
+	//{
 		if( health < 0 )
 		{
 			return;
 		}
-	}
+	//}
 	
 	// Flashlight has an infinite battery in multiplayer.
+#if 0
 	if( !common->IsMultiplayer() )
 	{
 		if( flashlight.GetEntity()->lightOn )
@@ -5924,6 +5925,7 @@ void idPlayer::UpdateFlashlight()
 		}
 		else
 		{
+#endif 
 			if( flashlightBattery < flashlight_batteryDrainTimeMS.GetInteger() )
 			{
 				flashlightBattery += ( gameLocal.time - gameLocal.previousTime ) * Max( 1, ( flashlight_batteryDrainTimeMS.GetInteger() / flashlight_batteryChargeTimeMS.GetInteger() ) );
@@ -5932,8 +5934,8 @@ void idPlayer::UpdateFlashlight()
 					flashlightBattery = flashlight_batteryDrainTimeMS.GetInteger();
 				}
 			}
-		}
-	}
+//		}
+//	}
 	
 	if( hud )
 	{
@@ -9469,20 +9471,20 @@ void idPlayer::Killed( idEntity* inflictor, idEntity* attacker, int damage, cons
 	
 	// In multiplayer, get rid of the flashlight, or other players
 	// will see it floating after the player is dead.
-	if( common->IsMultiplayer() )
-	{
+	//if( common->IsMultiplayer() )
+	//{
 		FlashlightOff();
 		if( flashlight.GetEntity() )
 		{
 			flashlight.GetEntity()->OwnerDied();
 		}
-	}
+	//}
 	
 	// drop the weapon as an item
 	DropWeapon( true );
 	
 	// drop the flag if player was carrying it
-	if( common->IsMultiplayer() && gameLocal.mpGame.IsGametypeFlagBased() && carryingFlag )
+	if(/* common->IsMultiplayer() && */ gameLocal.mpGame.IsGametypeFlagBased() && carryingFlag )
 	{
 		DropFlag();
 	}
@@ -9598,8 +9600,7 @@ void idPlayer::CalcDamagePoints( idEntity* inflictor, idEntity* attacker, const 
 	damage = GetDamageForLocation( damage, location );
 	
 	idPlayer* player = attacker->IsType( idPlayer::Type ) ? static_cast<idPlayer*>( attacker ) : NULL;
-	if( !common->IsMultiplayer() )
-	{
+	
 		if( inflictor != gameLocal.world )
 		{
 			switch( g_skill.GetInteger() )
@@ -9621,22 +9622,14 @@ void idPlayer::CalcDamagePoints( idEntity* inflictor, idEntity* attacker, const 
 					break;
 			}
 		}
-	}
 	
 	damage *= damageScale;
 	
 	// always give half damage if hurting self
 	if( attacker == this )
 	{
-		if( common->IsMultiplayer() )
-		{
 			// only do this in mp so single player plasma and rocket splash is very dangerous in close quarters
 			damage *= damageDef->GetFloat( "selfDamageScale", "0.5" );
-		}
-		else
-		{
-			damage *= damageDef->GetFloat( "selfDamageScale", "1" );
-		}
 	}
 	
 	// check for completely getting out of the damage
@@ -9662,7 +9655,7 @@ void idPlayer::CalcDamagePoints( idEntity* inflictor, idEntity* attacker, const 
 	{
 		float armor_protection;
 		
-		armor_protection = ( common->IsMultiplayer() ) ? g_armorProtectionMP.GetFloat() : g_armorProtection.GetFloat();
+		armor_protection =  g_armorProtectionMP.GetFloat();
 		
 		armorSave = ceil( damage * armor_protection );
 		if( armorSave >= inventory.armor )
@@ -9713,7 +9706,7 @@ void idPlayer::ControllerShakeFromDamage( int damage )
 {
 
 	// If the player is local. SHAkkkkkkeeee!
-	if( common->IsMultiplayer() && IsLocallyControlled() )
+	if( IsLocallyControlled() )
 	{
 	
 		int maxMagScale = pm_controllerShake_damageMaxMag.GetFloat();
@@ -9744,24 +9737,6 @@ int idPlayer::AdjustDamageAmount( const int inputDamage )
 	
 	if( inputDamage > 0 )
 	{
-	
-		if( !common->IsMultiplayer() )
-		{
-			float scale = new_g_damageScale;
-			if( g_useDynamicProtection.GetBool() && g_skill.GetInteger() < 2 )
-			{
-				if( gameLocal.time > lastDmgTime + 500 && scale > 0.25f )
-				{
-					scale -= 0.05f;
-					new_g_damageScale = scale;
-				}
-			}
-			
-			if( scale > 0.0f )
-			{
-				outputDamage *= scale;
-			}
-		}
 		
 		if( g_demoMode.GetBool() )
 		{
@@ -9977,7 +9952,7 @@ void idPlayer::Damage( idEntity* inflictor, idEntity* attacker, const idVec3& di
 	// Local clients will see the damage feedback (view kick, etc) when their health changes
 	// in a snapshot. This ensures that any feedback the local player sees is in sync with
 	// his actual health reported by the server.
-	if( common->IsMultiplayer() && common->IsClient() && IsLocallyControlled() )
+	if( common->IsClient() && IsLocallyControlled() )
 	{
 		return;
 	}
@@ -10013,7 +9988,7 @@ void idPlayer::Damage( idEntity* inflictor, idEntity* attacker, const idVec3& di
 		gameLocal.Printf( "client:%02d\tdamage type:%s\t\thealth:%03d\tdamage:%03d\tarmor:%03d\n", entityNumber, damageDef->GetName(), health, damage, armorSave );
 	}
 	
-	if( common->IsMultiplayer() && IsLocallyControlled() )
+	if(  IsLocallyControlled() )
 	{
 		ControllerShakeFromDamage( damage );
 	}
@@ -10031,7 +10006,7 @@ void idPlayer::Damage( idEntity* inflictor, idEntity* attacker, const idVec3& di
 	}
 	
 	// Only actually deal the damage here in singleplayer and for locally controlled servers.
-	if( !common->IsMultiplayer() || common->IsServer() )
+	if( common->IsServer() )
 	{
 		// Server will deal his damage normally
 		ServerDealDamage( finalDamage, *inflictor, *attacker, dir, damageDefName, location );
@@ -10080,7 +10055,7 @@ void idPlayer::Teleport( const idVec3& origin, const idAngles& angles, idEntity*
 	}
 	
 	SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
-	if( !common->IsMultiplayer() && GetFloorPos( 16.0f, org ) )
+	if( GetFloorPos( 16.0f, org ) )
 	{
 		SetOrigin( org );
 	}
@@ -10095,11 +10070,7 @@ void idPlayer::Teleport( const idVec3& origin, const idAngles& angles, idEntity*
 	legsYaw = 0.0f;
 	idealLegsYaw = 0.0f;
 	oldViewYaw = viewAngles.yaw;
-	
-	if( common->IsMultiplayer() )
-	{
-		playerView.Flash( colorWhite, 140 );
-	}
+	playerView.Flash( colorWhite, 140 );
 	
 	UpdateVisuals();
 	
@@ -10107,16 +10078,8 @@ void idPlayer::Teleport( const idVec3& origin, const idAngles& angles, idEntity*
 	
 	if( !common->IsClient() && !noclip )
 	{
-		if( common->IsMultiplayer() )
-		{
 			// kill anything at the new position or mark for kill depending on immediate or delayed teleport
 			gameLocal.KillBox( this, destination != NULL );
-		}
-		else
-		{
-			// kill anything at the new position
-			gameLocal.KillBox( this, true );
-		}
 	}
 	
 	if( PowerUpActive( HELLTIME ) )
@@ -10167,7 +10130,7 @@ float idPlayer::DefaultFov() const
 		}
 		else if( fov > 120.0f )
 		{
-			return 120.0f;
+			return 140.0f;
 		}
 	}
 	
@@ -10438,8 +10401,10 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 	
 	focusPoint = origin + angles.ToForward() * THIRD_PERSON_FOCUS_DISTANCE;
 	focusPoint.z += height;
+	//focusPoint.x += 50; //CHRIS
 	view = origin;
 	view.z += 8 + height;
+	//view.x += 20; //CHRIS
 	
 	angles.pitch *= 0.5f;
 	renderView->viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
@@ -10452,7 +10417,7 @@ void idPlayer::OffsetThirdPersonView( float angle, float range, float height, bo
 	{
 		// trace a ray from the origin to the viewpoint to make sure the view isn't
 		// in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
-		bounds = idBounds( idVec3( -4, -4, -4 ), idVec3( 4, 4, 4 ) );
+		bounds = idBounds( idVec3( -8, -8, -8 ), idVec3( 8, 8, 8 ) );
 		gameLocal.clip.TraceBounds( trace, origin, view, bounds, MASK_SOLID, this );
 		if( trace.fraction != 1.0f )
 		{
@@ -10516,7 +10481,7 @@ void idPlayer::GetViewPos( idVec3& origin, idMat3& axis ) const
 	if( health <= 0 )
 	{
 		angles.yaw = viewAngles.yaw;
-		angles.roll = 40;
+		angles.roll = rand() & 40;
 		angles.pitch = -15;
 		axis = angles.ToMat3();
 		origin = GetEyePosition();
@@ -10564,10 +10529,10 @@ void idPlayer::CalculateFirstPersonView()
 	{
 		// offset for local bobbing and kicks
 		GetViewPos( firstPersonViewOrigin, firstPersonViewAxis );
-#if 0
+//#if 0
 		// shakefrom sound stuff only happens in first person
 		firstPersonViewAxis = firstPersonViewAxis * playerView.ShakeAxis();
-#endif
+//#endif
 	}
 }
 
@@ -10647,7 +10612,7 @@ void idPlayer::CalculateRenderView()
 		else if( pm_thirdPersonDeath.GetBool() )
 		{
 			range = gameLocal.time < minRespawnTime ? ( gameLocal.time + RAGDOLL_DEATH_TIME - minRespawnTime ) * ( 120.0f / RAGDOLL_DEATH_TIME ) : 120.0f;
-			OffsetThirdPersonView( 0.0f, 20.0f + range, 0.0f, false );
+			OffsetThirdPersonView( 0.0f, 20.0f /* + range */ , 0.0f, false ); //CHRIS
 		}
 		else
 		{
@@ -11208,10 +11173,10 @@ idPlayer::Event_OpenPDA
 */
 void idPlayer::Event_OpenPDA()
 {
-	if( !common->IsMultiplayer() )
-	{
+//	if( !common->IsMultiplayer() )
+//	{
 		TogglePDA();
-	}
+//	}
 }
 
 /*
@@ -11474,7 +11439,7 @@ void idPlayer::ClientThink( const int curTime, const float fraction, const bool 
 		}
 	}
 	
-	if( common->IsMultiplayer() || g_showPlayerShadow.GetBool() )
+	if(  g_showPlayerShadow.GetBool() )
 	{
 		renderEntity.suppressShadowInViewID	= 0;
 		if( headRenderEnt )
@@ -11524,10 +11489,10 @@ void idPlayer::ClientThink( const int curTime, const float fraction, const bool 
 		enviroSuitLight.GetEntity()->Present();
 	}
 	
-	if( common->IsMultiplayer() )
-	{
+//	if( common->IsMultiplayer() )
+//	{
 		DrawPlayerIcons();
-	}
+//	}
 	
 	Present();
 	
@@ -11551,7 +11516,7 @@ void idPlayer::ClientThink( const int curTime, const float fraction, const bool 
 	//InterpolatePhysics( fraction );
 	
 	// Make sure voice groups are set to the right team
-	if( common->IsMultiplayer() && session->GetState() >= idSession::INGAME && entityNumber < MAX_CLIENTS )  		// The entityNumber < MAX_CLIENTS seems to quiet the static analyzer
+	if( session->GetState() >= idSession::INGAME && entityNumber < MAX_CLIENTS )  		// The entityNumber < MAX_CLIENTS seems to quiet the static analyzer
 	{
 		// Make sure we're on the right team (at the lobby level)
 		const int voiceTeam = spectating ? LOBBY_SPECTATE_TEAM_FOR_VOICE_CHAT : team;
@@ -12406,7 +12371,7 @@ idPlayer::DropFlag()
 */
 void idPlayer::DropFlag()
 {
-	if( !carryingFlag || !common->IsMultiplayer() || !gameLocal.mpGame.IsGametypeFlagBased() )  /* CTF */
+	if( !carryingFlag || !gameLocal.mpGame.IsGametypeFlagBased() )  /* CTF */
 		return;
 		
 	idEntity* entity = gameLocal.mpGame.GetTeamFlag( 1 - team );
@@ -12426,7 +12391,7 @@ void idPlayer::DropFlag()
 void idPlayer::ReturnFlag()
 {
 
-	if( !carryingFlag || !common->IsMultiplayer() || !gameLocal.mpGame.IsGametypeFlagBased() )  /* CTF */
+	if( !carryingFlag || !gameLocal.mpGame.IsGametypeFlagBased() )  /* CTF */
 		return;
 		
 	idEntity* entity = gameLocal.mpGame.GetTeamFlag( 1 - team );
@@ -12445,7 +12410,7 @@ void idPlayer::ReturnFlag()
 void idPlayer::FreeModelDef()
 {
 	idAFEntity_Base::FreeModelDef();
-	if( common->IsMultiplayer() && gameLocal.mpGame.IsGametypeFlagBased() )
+	if(gameLocal.mpGame.IsGametypeFlagBased() )
 		playerIcon.FreeIcon();
 }
 

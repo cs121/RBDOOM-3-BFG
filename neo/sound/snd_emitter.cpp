@@ -236,10 +236,10 @@ void idSoundChannel::UpdateVolume( int currentTime )
 	}
 	
 	// if you don't want to hear all the beeps from missing sounds
-	if( leadinSample->IsDefault() && !s_playDefaultSound.GetBool() )
-	{
+	//if( leadinSample->IsDefault() && !s_playDefaultSound.GetBool() )
+	//{
 		return;
-	}
+	//}
 	
 	bool emitterIsListener = ( emitter->emitterId == soundWorld->listener.id );
 	

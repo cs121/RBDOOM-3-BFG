@@ -276,7 +276,7 @@ P_GiveArmor
 //
 void P_GiveCard( player_t* player, card_t card, const char *pickup_message ) {
 
-	if ( ( ::g->demoplayback && ::g->netgame ) || common->IsMultiplayer() ) {
+	if ( ( ::g->demoplayback && ::g->netgame ) /* || common->IsMultiplayer() */ ) {
 		for ( int i=0; i < MAXPLAYERS; i++ ) {
 			if ( ::g->playeringame[i] ) {
 				player_t *thePlayer = &::g->players[i];
@@ -621,6 +621,7 @@ P_TouchSpecialThing
 			return;
 
 		// DHM - Nerve :: Give achievement
+#if 0
 		if ( !common->IsMultiplayer() ) {
 			switch( DoomLib::GetGameSKU() ) {
 				case GAME_SKU_DOOM2_BFG: {
@@ -632,6 +633,7 @@ P_TouchSpecialThing
 				}
 			}
 		}
+#endif 
 
 		player->message = GOTBFG9000;
 		sound = sfx_wpnup;	
@@ -765,7 +767,7 @@ P_KillMobj
 
 		// DHM - Nerve :: Check for killing cyberdemon with fists achievement
 		// JAF TROPHY int port = gameLocal->GetPortForPlayer( DoomLib::GetPlayer() );
-
+#if 0
 		if ( source->player->readyweapon == wp_fist && target->type == MT_CYBORG && !common->IsMultiplayer() ) {
 			switch( DoomLib::GetGameSKU() ) {
 				case GAME_SKU_DOOM2_BFG: {
@@ -784,7 +786,8 @@ P_KillMobj
 				}
 			}
 		}
-
+#endif
+#if 0
 		// DHM - Nerve :: Chainsaw kills
 		if ( source->player->readyweapon == wp_chainsaw && !common->IsMultiplayer() ) {
 			source->player->chainsawKills++;
@@ -807,6 +810,9 @@ P_KillMobj
 				}
 			}
 		}
+#endif
+
+#if 0
 
 		// DHM - Nerve :: Berserker kills
 		if ( source->player->readyweapon == wp_fist && source->player->powers[pw_strength] && !common->IsMultiplayer()) {
@@ -831,6 +837,7 @@ P_KillMobj
 				}				
 			}
 		}
+#endif 
 	}
 	else if (!::g->netgame && (target->flags & MF_COUNTKILL) )
 	{

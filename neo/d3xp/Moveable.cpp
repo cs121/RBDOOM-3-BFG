@@ -341,10 +341,11 @@ bool idMoveable::Collide( const trace_t& collision, const idVec3& velocity )
 				else if( hasDamage )
 				{
 					// in multiplayer, scale damage wrt mass of object
-					if( common->IsMultiplayer() )
-					{
+					//if( common->IsMultiplayer() )
+					//{
 						f *= GetPhysics()->GetMass() * g_moveableDamageScale.GetFloat();
-					}
+					//}
+					//CHRIS
 					
 					if( attacker )
 					{

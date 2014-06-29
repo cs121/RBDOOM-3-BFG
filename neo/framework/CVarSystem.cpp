@@ -356,8 +356,8 @@ idInternalCVar::Set
 */
 void idInternalCVar::Set( const char* newValue, bool force, bool fromServer )
 {
-	if( common->IsMultiplayer() && !fromServer )
-	{
+//	if( common->IsMultiplayer() && !fromServer )
+//	{
 #ifndef ID_TYPEINFO
 		if( ( flags & CVAR_NETWORKSYNC ) && common->IsClient() )
 		{
@@ -367,10 +367,11 @@ void idInternalCVar::Set( const char* newValue, bool force, bool fromServer )
 #endif
 		if( ( flags & CVAR_CHEAT ) && !net_allowCheats.GetBool() )
 		{
-			common->Printf( "%s cannot be changed in multiplayer.\n", nameString.c_str() );
-			return;
+			common->Printf( "%s may not be changed in multiplayer.\n", nameString.c_str() );
+			// return;
 		}
-	}
+//	}
+		//CHRiS
 	
 	if( !newValue )
 	{

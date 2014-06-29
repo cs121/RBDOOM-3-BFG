@@ -118,7 +118,7 @@ bool idAFVector::Parse( idLexer& src )
 	}
 	else
 	{
-		src.Error( "unknown token %s in vector", token.c_str() );
+		src.Warning("unknown token %s in vector", token.c_str());
 		return false;
 	}
 	
@@ -918,7 +918,7 @@ bool idDeclAF::ParseBody( idLexer& src )
 	body->name = token;
 	if( !body->name.Icmp( "origin" ) || !body->name.Icmp( "world" ) )
 	{
-		src.Error( "a body may not be named \"origin\" or \"world\"" );
+		src.Warning("a body may not be named \"origin\" or \"world\"");
 		return false;
 	}
 	
@@ -1020,12 +1020,12 @@ bool idDeclAF::ParseBody( idLexer& src )
 			}
 			else if( !token.Icmp( "custom" ) )
 			{
-				src.Error( "custom models not yet implemented" );
+				src.Warning("custom models not yet implemented");
 				return false;
 			}
 			else
 			{
-				src.Error( "unknown model type %s", token.c_str() );
+				src.Warning("unknown model type %s", token.c_str());
 				return false;
 			}
 		}
@@ -1118,20 +1118,20 @@ bool idDeclAF::ParseBody( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in body", token.c_str() );
+			src.Warning("unknown token %s in body", token.c_str());
 			return false;
 		}
 	}
 	
 	if( body->modelType == TRM_INVALID )
 	{
-		src.Error( "no model set for body" );
+		src.Warning("no model set for body");
 		return false;
 	}
 	
 	if( !hasJoint )
 	{
-		src.Error( "no joint set for body" );
+		src.Warning("no joint set for body");
 		return false;
 	}
 	
@@ -1181,7 +1181,7 @@ bool idDeclAF::ParseFixed( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in ball and socket joint", token.c_str() );
+			src.Warning("unknown token %s in ball and socket joint", token.c_str());
 			return false;
 		}
 	}
@@ -1285,7 +1285,7 @@ bool idDeclAF::ParseBallAndSocketJoint( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in ball and socket joint", token.c_str() );
+			src.Warning("unknown token %s in ball and socket joint", token.c_str());
 			return false;
 		}
 	}
@@ -1389,7 +1389,7 @@ bool idDeclAF::ParseUniversalJoint( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in universal joint", token.c_str() );
+			src.Warning("unknown token %s in universal joint", token.c_str());
 			return false;
 		}
 	}
@@ -1475,7 +1475,7 @@ bool idDeclAF::ParseHinge( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in hinge", token.c_str() );
+			src.Warning("unknown token %s in hinge", token.c_str());
 			return false;
 		}
 	}
@@ -1537,7 +1537,7 @@ bool idDeclAF::ParseSlider( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in slider", token.c_str() );
+			src.Warning("unknown token %s in slider", token.c_str());
 			return false;
 		}
 	}
@@ -1630,7 +1630,7 @@ bool idDeclAF::ParseSpring( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in spring", token.c_str() );
+			src.Warning("unknown token %s in spring", token.c_str());
 			return false;
 		}
 	}
@@ -1767,7 +1767,7 @@ bool idDeclAF::ParseSettings( idLexer& src )
 		}
 		else
 		{
-			src.Error( "unknown token %s in settings", token.c_str() );
+			src.Warning("unknown token %s in settings", token.c_str());
 			return false;
 		}
 	}
@@ -1855,7 +1855,7 @@ bool idDeclAF::Parse( const char* text, const int textLength, bool allowBinaryVe
 		}
 		else
 		{
-			src.Error( "unknown keyword %s", token.c_str() );
+			src.Warning("unknown keyword %s", token.c_str());
 			return false;
 		}
 	}
@@ -1867,7 +1867,7 @@ bool idDeclAF::Parse( const char* text, const int textLength, bool allowBinaryVe
 		{
 			if( bodies[i]->name == bodies[j]->name )
 			{
-				src.Error( "two bodies with the same name \"%s\"", bodies[i]->name.c_str() );
+				src.Warning("two bodies with the same name \"%s\"", bodies[i]->name.c_str());
 			}
 		}
 	}
@@ -1879,17 +1879,17 @@ bool idDeclAF::Parse( const char* text, const int textLength, bool allowBinaryVe
 		{
 			if( constraints[i]->name == constraints[j]->name )
 			{
-				src.Error( "two constraints with the same name \"%s\"", constraints[i]->name.c_str() );
+				src.Warning("two constraints with the same name \"%s\"", constraints[i]->name.c_str());
 			}
 		}
 		// check if there are two valid bodies set
 		if( constraints[i]->body1 == "" )
 		{
-			src.Error( "no valid body1 specified for constraint '%s'", constraints[i]->name.c_str() );
+			src.Warning("no valid body1 specified for constraint '%s'", constraints[i]->name.c_str());
 		}
 		if( constraints[i]->body2 == "" )
 		{
-			src.Error( "no valid body2 specified for constraint '%s'", constraints[i]->name.c_str() );
+			src.Warning("no valid body2 specified for constraint '%s'", constraints[i]->name.c_str());
 		}
 	}
 	

@@ -222,10 +222,10 @@ void idPlayerStart::TeleportPlayer( idPlayer* player )
 		player->Teleport( GetPhysics()->GetOrigin(), GetPhysics()->GetAxis().ToAngles(), NULL );
 		
 		// multiplayer hijacked this entity, so only push the player in multiplayer
-		if( common->IsMultiplayer() )
-		{
+		//if( common->IsMultiplayer() )
+		//{
 			player->GetPhysics()->SetLinearVelocity( GetPhysics()->GetAxis()[0] * pushVel );
-		}
+		//} //CHRIS
 	}
 }
 

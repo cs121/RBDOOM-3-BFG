@@ -214,10 +214,10 @@ void idWeapon::Spawn()
 		worldModel.GetEntity()->fl.networkSync = true;
 	}
 	
-	if( 1 /*!common->IsMultiplayer()*/ )
-	{
+//	if( 1 /*!common->IsMultiplayer()*/ )
+//	{
 		grabber.Initialize();
-	}
+//	}
 	
 	thread = new idThread();
 	thread->ManualDelete();
@@ -1309,6 +1309,7 @@ void idWeapon::GetWeaponDef( const char* objectname, int ammoinclip )
 	}
 	
 	//Initialize the particles
+#if 0
 	if( !common->IsMultiplayer() )
 	{
 	
@@ -1390,6 +1391,7 @@ void idWeapon::GetWeaponDef( const char* objectname, int ammoinclip )
 			lkv = weaponDef->dict.MatchPrefix( "weapon_light", lkv );
 		}
 	}
+#endif
 }
 
 /***********************************************************************
@@ -2689,7 +2691,7 @@ void idWeapon::PresentWeapon( bool showViewModel )
 	{
 		// deal with the third-person visible world model
 		// don't show shadows of the world model in first person
-		if( common->IsMultiplayer() || g_showPlayerShadow.GetBool() || pm_thirdPerson.GetBool() )
+		if( g_showPlayerShadow.GetBool() || pm_thirdPerson.GetBool() )
 		{
 			worldModel.GetEntity()->GetRenderEntity()->suppressShadowInViewID	= 0;
 		}
@@ -2833,7 +2835,7 @@ void idWeapon::PresentWeapon( bool showViewModel )
 		gameRenderWorld->UpdateLightDef( worldMuzzleFlashHandle, &worldMuzzleFlash );
 		
 		// wake up monsters with the flashlight
-		if( !common->IsMultiplayer() && lightOn && !owner->fl.notarget )
+		if( lightOn && !owner->fl.notarget )
 		{
 			AlertMonsters();
 		}
@@ -3382,7 +3384,7 @@ void idWeapon::Event_WeaponState( const char* statename, int blendFrames )
 	idealState = statename;
 	
 	// HACK, Fixes reload animation on player not playing on second reload ( on non local client players, and only with host viewing. )
-	if( common->IsMultiplayer() && strcmp( weaponDef->GetName(), "weapon_shotgun_double_mp" ) == 0 )
+	if(strcmp( weaponDef->GetName(), "weapon_shotgun_double_mp" ) == 0 )
 	{
 		if( strcmp( statename, "Reload" ) != 0 )
 		{
@@ -4561,8 +4563,7 @@ void idWeapon::Event_Melee()
 			ent->ApplyImpulse( this, tr.c.id, tr.c.point, impulse );
 			
 			// weapon stealing - do this before damaging so weapons are not dropped twice
-			if( common->IsMultiplayer()
-					&& weaponDef->dict.GetBool( "stealing" )
+			if(		weaponDef->dict.GetBool( "stealing" )
 					&& ent->IsType( idPlayer::Type )
 					&& !owner->PowerUpActive( BERSERK )
 					&& ( ( gameLocal.gameType != GAME_TDM ) || gameLocal.serverInfo.GetBool( "si_teamDamage" ) || ( owner->team != static_cast< idPlayer* >( ent )->team ) )

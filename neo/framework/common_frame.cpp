@@ -420,10 +420,10 @@ void idCommonLocal::ProcessGameReturn( const gameReturn_t& ret )
 		}
 		else if( !idStr::Icmp( args.Argv( 0 ), "died" ) )
 		{
-			if( !IsMultiplayer() )
-			{
-				game->Shell_Show( true );
-			}
+		//	if( !IsMultiplayer() )
+		//	{
+		//		game->Shell_Show( true );
+		//	}
 		}
 		else if( !idStr::Icmp( args.Argv( 0 ), "disconnect" ) )
 		{
@@ -515,9 +515,8 @@ void idCommonLocal::Frame()
 		// RB begin
 #if defined(USE_DOOMCLASSIC)
 		const bool pauseGame = ( !mapSpawned
-								 || ( !IsMultiplayer()
-									  && ( Dialog().IsDialogPausing() || session->IsSystemUIShowing()
-										   || ( game && game->Shell_IsActive() ) || com_pause.GetInteger() ) ) )
+								 || ( Dialog().IsDialogPausing() || session->IsSystemUIShowing()
+										   || ( game && game->Shell_IsActive() ) || com_pause.GetInteger() ) )
 							   && !IsPlayingDoomClassic();
 #else
 		const bool pauseGame = ( !mapSpawned

@@ -2797,7 +2797,8 @@ void idGameLocal::RunSingleUserCmd( usercmd_t& cmd, idPlayer& player )
 		SetScriptFPS( forcedClientEngineHz );
 	}
 	
-	if( !common->IsMultiplayer() || common->IsServer() )
+	//if( !common->IsMultiplayer() || common->IsServer() )
+	if (common->IsServer()) //CHRIS
 	{
 		player.Think();
 		

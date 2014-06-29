@@ -3371,7 +3371,7 @@ void idMaterial::SetFastPathImages()
 		{
 			case SL_COVERAGE:
 			case SL_AMBIENT:
-				break;
+				 break;
 			case SL_BUMP:
 			{
 				if( fastPathBumpImage )

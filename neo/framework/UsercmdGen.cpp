@@ -431,7 +431,7 @@ void idUsercmdGenLocal::AdjustAngles()
 {
 	float speed = MS2SEC( 16 );
 	
-	if( toggled_run.on || ( in_alwaysRun.GetBool() && common->IsMultiplayer() ) )
+	if( toggled_run.on || ( in_alwaysRun.GetBool() /*&& common->IsMultiplayer() */ ) )
 	{
 		speed *= in_angleSpeedKey.GetFloat();
 	}
@@ -1069,7 +1069,7 @@ void idUsercmdGenLocal::CmdButtons()
 	}
 	
 	// check the run button
-	if( toggled_run.on || ( in_alwaysRun.GetBool() && common->IsMultiplayer() ) )
+	if( toggled_run.on || ( in_alwaysRun.GetBool() /* && common->IsMultiplayer() */ ) )
 	{
 		cmd.buttons |= BUTTON_RUN;
 	}
@@ -1102,7 +1102,7 @@ void idUsercmdGenLocal::InitCurrent()
 	memset( &cmd, 0, sizeof( cmd ) );
 	cmd.impulseSequence = impulseSequence;
 	cmd.impulse = impulse;
-	cmd.buttons |= ( in_alwaysRun.GetBool() && common->IsMultiplayer() ) ? BUTTON_RUN : 0;
+	cmd.buttons |= ( in_alwaysRun.GetBool() /* && common->IsMultiplayer() */ ) ? BUTTON_RUN : 0;
 }
 
 /*
@@ -1120,7 +1120,7 @@ void idUsercmdGenLocal::MakeCurrent()
 	{
 		// update toggled key states
 		toggled_crouch.SetKeyState( ButtonState( UB_MOVEDOWN ), in_toggleCrouch.GetBool() );
-		toggled_run.SetKeyState( ButtonState( UB_SPEED ), in_toggleRun.GetBool() && common->IsMultiplayer() );
+		toggled_run.SetKeyState( ButtonState( UB_SPEED ), in_toggleRun.GetBool() /* && common->IsMultiplayer() */ );
 		toggled_zoom.SetKeyState( ButtonState( UB_ZOOM ), in_toggleZoom.GetBool() );
 		
 		// get basic movement from mouse
