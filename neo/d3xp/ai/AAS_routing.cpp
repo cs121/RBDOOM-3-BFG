@@ -165,7 +165,7 @@ void idAASLocal::CalculateAreaTravelTimes()
 			assert( i < MAX_REACH_PER_AREA );
 			if( i >= MAX_REACH_PER_AREA )
 			{
-				gameLocal.Error( "i >= MAX_REACH_PER_AREA" );
+				gameLocal.Warning( "i >= MAX_REACH_PER_AREA" ); //CHRIS
 			}
 			reach->number = i;
 			reach->disableCount = 0;

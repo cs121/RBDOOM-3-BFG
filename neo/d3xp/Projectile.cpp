@@ -373,7 +373,7 @@ void idProjectile::Launch( const idVec3& start, const idVec3& dir, const idVec3&
 	
 	if( mass <= 0 )
 	{
-		gameLocal.Error( "Invalid mass on '%s'\n", GetEntityDefName() );
+		gameLocal.Warning("Invalid mass on '%s'\n", GetEntityDefName());
 	}
 	
 	thrust *= mass;
@@ -1274,7 +1274,7 @@ void idProjectile::Explode( const trace_t& collision, idEntity* ignore )
 				gameLocal.SpawnEntityDef( *debris, &ent, false );
 				if( ent == NULL || !ent->IsType( idDebris::Type ) )
 				{
-					gameLocal.Error( "'projectile_debris' is not an idDebris" );
+					gameLocal.Warning("'projectile_debris' is not an idDebris");
 					return;
 				}
 				
@@ -1299,7 +1299,7 @@ void idProjectile::Explode( const trace_t& collision, idEntity* ignore )
 				gameLocal.SpawnEntityDef( *debris, &ent, false );
 				if( ent == NULL || !ent->IsType( idDebris::Type ) )
 				{
-					gameLocal.Error( "'projectile_shrapnel' is not an idDebris" );
+					gameLocal.Warning("'projectile_shrapnel' is not an idDebris");
 					break;
 				}
 				
@@ -2911,7 +2911,7 @@ void idDebris::Launch()
 	
 	if( mass <= 0 )
 	{
-		gameLocal.Error( "Invalid mass on '%s'\n", GetEntityDefName() );
+		gameLocal.Warning("Invalid mass on '%s'\n", GetEntityDefName());
 	}
 	
 	if( randomVelocity )

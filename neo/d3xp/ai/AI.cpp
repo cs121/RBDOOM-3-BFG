@@ -1496,7 +1496,7 @@ void idAI::SetAAS()
 		{
 			if( !ValidForBounds( settings, physicsObj.GetBounds() ) )
 			{
-				gameLocal.Error( "%s cannot use use_aas %s\n", name.c_str(), use_aas.c_str() );
+				gameLocal.Warning("%s cannot use use_aas %s\n", name.c_str(), use_aas.c_str());
 			}
 			float height = settings->maxStepHeight;
 			physicsObj.SetMaxStepHeight( height );
@@ -4670,7 +4670,7 @@ void idAI::CalculateAttackOffsets()
 				joint = animator.GetJointHandle( command->string->c_str() );
 				if( joint == INVALID_JOINT )
 				{
-					gameLocal.Error( "Invalid joint '%s' on 'launch_missile' frame command on frame %d of model '%s'", command->string->c_str(), frame, modelDef->GetName() );
+					gameLocal.Warning("Invalid joint '%s' on 'launch_missile' frame command on frame %d of model '%s'", command->string->c_str(), frame, modelDef->GetName());
 				}
 				GetJointTransformForAnim( joint, i, FRAME2MS( frame ), missileLaunchOffset[ i ], axis );
 			}
@@ -4794,14 +4794,14 @@ idProjectile* idAI::CreateProjectile( const idVec3& pos, const idVec3& dir )
 		if( ent == NULL )
 		{
 			clsname = projectileDef->GetString( "classname" );
-			gameLocal.Error( "Could not spawn entityDef '%s'", clsname );
+			gameLocal.Warning( "Could not spawn entityDef '%s'", clsname );
 			return NULL;
 		}
 		
 		if( !ent->IsType( idProjectile::Type ) )
 		{
 			clsname = ent->GetClassname();
-			gameLocal.Error( "'%s' is not an idProjectile", clsname );
+			gameLocal.Warning("'%s' is not an idProjectile", clsname);
 		}
 		projectile = ( idProjectile* )ent;
 	}
@@ -5019,7 +5019,7 @@ void idAI::DirectDamage( const char* meleeDefName, idEntity* ent )
 	meleeDef = gameLocal.FindEntityDefDict( meleeDefName, false );
 	if( meleeDef == NULL )
 	{
-		gameLocal.Error( "Unknown damage def '%s' on '%s'", meleeDefName, name.c_str() );
+		gameLocal.Warning( "Unknown damage def '%s' on '%s'", meleeDefName, name.c_str() );
 		return;
 	}
 	
@@ -5129,7 +5129,7 @@ bool idAI::AttackMelee( const char* meleeDefName )
 	meleeDef = gameLocal.FindEntityDefDict( meleeDefName, false );
 	if( meleeDef == NULL )
 	{
-		gameLocal.Error( "Unknown melee '%s'", meleeDefName );
+		gameLocal.Warning( "Unknown melee '%s'", meleeDefName );
 		return false;
 	}
 	
@@ -5281,7 +5281,7 @@ void idAI::GetMuzzle( const char* jointname, idVec3& muzzle, idMat3& axis )
 		joint = animator.GetJointHandle( jointname );
 		if( joint == INVALID_JOINT )
 		{
-			gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
+			gameLocal.Warning("Unknown joint '%s' on %s", jointname, GetEntityDefName());
 		}
 		GetJointWorldTransform( joint, gameLocal.time, muzzle, axis );
 	}

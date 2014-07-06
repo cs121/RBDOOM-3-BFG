@@ -95,7 +95,7 @@ void idWorldspawn::Spawn()
 		func = gameLocal.program.FindFunction( kv->GetValue() );
 		if( func == NULL )
 		{
-			gameLocal.Error( "Function '%s' not found in script for '%s' key on worldspawn", kv->GetValue().c_str(), kv->GetKey().c_str() );
+			gameLocal.Warning("Function '%s' not found in script for '%s' key on worldspawn", kv->GetValue().c_str(), kv->GetKey().c_str());
 		}
 		
 		thread = new idThread( func );
@@ -151,5 +151,5 @@ idWorldspawn::Event_Remove
 */
 void idWorldspawn::Event_Remove()
 {
-	gameLocal.Error( "Tried to remove world" );
+	gameLocal.Warning("Tried to remove world");
 }

@@ -1185,7 +1185,8 @@ void idMover::Event_SetMoveTime( float time )
 {
 	if( time <= 0 )
 	{
-		gameLocal.Error( "Cannot set time less than or equal to 0." );
+		gameLocal.Warning( "Cannot set time less than or equal to 0." );
+		time = 0.01f;
 	}
 	
 	move_speed = 0;
@@ -1202,6 +1203,7 @@ void idMover::Event_SetAccellerationTime( float time )
 	if( time < 0 )
 	{
 		gameLocal.Error( "Cannot set acceleration time less than 0." );
+		time = 0.01f;
 	}
 	
 	acceltime = SEC2MS( time );
@@ -1216,7 +1218,8 @@ void idMover::Event_SetDecelerationTime( float time )
 {
 	if( time < 0 )
 	{
-		gameLocal.Error( "Cannot set deceleration time less than 0." );
+		gameLocal.Warning("Cannot set deceleration time less than 0.");
+		time = 0.01f;
 	}
 	
 	deceltime = SEC2MS( time );
@@ -1290,7 +1293,7 @@ void idMover::Event_MoveAccelerateTo( float speed, float time )
 	
 	if( time < 0 )
 	{
-		gameLocal.Error( "idMover::Event_MoveAccelerateTo: cannot set acceleration time less than 0." );
+		gameLocal.Warning("idMover::Event_MoveAccelerateTo: cannot set acceleration time less than 0.");
 	}
 	
 	dir = physicsObj.GetLinearVelocity();
@@ -1299,7 +1302,7 @@ void idMover::Event_MoveAccelerateTo( float speed, float time )
 	// if not moving already
 	if( v == 0.0f )
 	{
-		gameLocal.Error( "idMover::Event_MoveAccelerateTo: not moving." );
+		gameLocal.Warning("idMover::Event_MoveAccelerateTo: not moving.");
 	}
 	
 	// if already moving faster than the desired speed
@@ -1337,7 +1340,7 @@ void idMover::Event_MoveDecelerateTo( float speed, float time )
 	
 	if( time < 0 )
 	{
-		gameLocal.Error( "idMover::Event_MoveDecelerateTo: cannot set deceleration time less than 0." );
+		gameLocal.Warning("idMover::Event_MoveDecelerateTo: cannot set deceleration time less than 0.");
 	}
 	
 	dir = physicsObj.GetLinearVelocity();
@@ -1346,7 +1349,7 @@ void idMover::Event_MoveDecelerateTo( float speed, float time )
 	// if not moving already
 	if( v == 0.0f )
 	{
-		gameLocal.Error( "idMover::Event_MoveDecelerateTo: not moving." );
+		gameLocal.Warning("idMover::Event_MoveDecelerateTo: not moving.");
 	}
 	
 	// if already moving slower than the desired speed
@@ -1382,7 +1385,7 @@ void idMover::Event_RotateDownTo( int axis, float angle )
 	
 	if( ( axis < 0 ) || ( axis > 2 ) )
 	{
-		gameLocal.Error( "Invalid axis" );
+		gameLocal.Warning("Invalid axis");
 	}
 	
 	physicsObj.GetLocalAngles( ang );
@@ -1407,7 +1410,7 @@ void idMover::Event_RotateUpTo( int axis, float angle )
 	
 	if( ( axis < 0 ) || ( axis > 2 ) )
 	{
-		gameLocal.Error( "Invalid axis" );
+		gameLocal.Warning("Invalid axis");
 	}
 	
 	physicsObj.GetLocalAngles( ang );
@@ -3071,7 +3074,7 @@ void idMover_Binary::Event_Reached_BinaryMover()
 	}
 	else
 	{
-		gameLocal.Error( "Event_Reached_BinaryMover: bad moverState" );
+		gameLocal.Warning("Event_Reached_BinaryMover: bad moverState");
 	}
 }
 
@@ -5427,7 +5430,7 @@ void idPendulum::Spawn()
 	{
 		if( freq <= 0.0f )
 		{
-			gameLocal.Error( "Invalid frequency on entity '%s'", GetName() );
+			gameLocal.Warning("Invalid frequency on entity '%s'", GetName());
 		}
 	}
 	else

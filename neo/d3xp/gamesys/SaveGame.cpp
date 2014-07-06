@@ -614,7 +614,7 @@ void idSaveGame::WriteUserInterface( const idUserInterface* ui, bool unique )
 		WriteBool( unique );
 		if( ui->WriteToSaveGame( file ) == false )
 		{
-			gameLocal.Error( "idSaveGame::WriteUserInterface: ui failed to write properly\n" );
+			gameLocal.Warning( "idSaveGame::WriteUserInterface: ui failed to write properly\n" );
 		}
 	}
 }

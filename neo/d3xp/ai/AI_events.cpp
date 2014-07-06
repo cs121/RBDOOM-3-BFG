@@ -500,7 +500,7 @@ void idAI::Event_ClosestReachableEnemyOfEntity( idEntity* team_mate )
 	
 	if( !team_mate->IsType( idActor::Type ) )
 	{
-		gameLocal.Error( "Entity '%s' is not an AI character or player", team_mate->GetName() );
+		gameLocal.Warning("Entity '%s' is not an AI character or player", team_mate->GetName());
 	}
 	
 	actor = static_cast<idActor*>( team_mate );
@@ -570,7 +570,7 @@ void idAI::Event_SetEnemy( idEntity* ent )
 	}
 	else if( !ent->IsType( idActor::Type ) )
 	{
-		gameLocal.Error( "'%s' is not an idActor (player or ai controlled character)", ent->name.c_str() );
+		gameLocal.Warning("'%s' is not an idActor (player or ai controlled character)", ent->name.c_str());
 	}
 	else
 	{
@@ -756,14 +756,14 @@ void idAI::Event_LaunchProjectile( const char* entityDefName )
 	if( ent == NULL )
 	{
 		clsname = projectileDef->GetString( "classname" );
-		gameLocal.Error( "Could not spawn entityDef '%s'", clsname );
+		gameLocal.Warning("Could not spawn entityDef '%s'", clsname);
 		return;
 	}
 	
 	if( !ent->IsType( idProjectile::Type ) )
 	{
 		clsname = ent->GetClassname();
-		gameLocal.Error( "'%s' is not an idProjectile", clsname );
+		gameLocal.Warning("'%s' is not an idProjectile", clsname);
 	}
 	proj = ( idProjectile* )ent;
 	
@@ -837,7 +837,7 @@ void idAI::Event_RadiusDamageFromJoint( const char* jointname, const char* damag
 		joint = animator.GetJointHandle( jointname );
 		if( joint == INVALID_JOINT )
 		{
-			gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
+			gameLocal.Warning("Unknown joint '%s' on %s", jointname, GetEntityDefName());
 		}
 		GetJointWorldTransform( joint, gameLocal.time, org, axis );
 	}
@@ -895,7 +895,7 @@ void idAI::Event_MeleeAttackToJoint( const char* jointname, const char* meleeDef
 	joint = animator.GetJointHandle( jointname );
 	if( joint == INVALID_JOINT )
 	{
-		gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
+		gameLocal.Warning("Unknown joint '%s' on %s", jointname, GetEntityDefName());
 	}
 	animator.GetJointTransform( joint, gameLocal.time, end, axis );
 	end = physicsObj.GetOrigin() + ( end + modelOffset ) * viewAxis * physicsObj.GetGravityAxis();
@@ -1219,7 +1219,7 @@ void idAI::Event_MoveToAttackPosition( idEntity* entity, const char* attack_anim
 	anim = GetAnim( ANIMCHANNEL_LEGS, attack_anim );
 	if( !anim )
 	{
-		gameLocal.Error( "Unknown anim '%s'", attack_anim );
+		gameLocal.Warning("Unknown anim '%s'", attack_anim);
 	}
 	
 	MoveToAttackPosition( entity, anim );
@@ -1588,7 +1588,7 @@ void idAI::Event_SetTalkTarget( idEntity* target )
 {
 	if( target && !target->IsType( idActor::Type ) )
 	{
-		gameLocal.Error( "Cannot set talk target to '%s'.  Not a character or player.", target->GetName() );
+		gameLocal.Warning("Cannot set talk target to '%s'.  Not a character or player.", target->GetName());
 	}
 	talkTarget = static_cast<idActor*>( target );
 	if( target )
@@ -1620,7 +1620,7 @@ void idAI::Event_SetTalkState( int state )
 {
 	if( ( state < 0 ) || ( state >= NUM_TALK_STATES ) )
 	{
-		gameLocal.Error( "Invalid talk state (%d)", state );
+		gameLocal.Warning("Invalid talk state (%d)", state);
 	}
 	
 	talk_state = static_cast<talkState_t>( state );
@@ -1898,7 +1898,7 @@ void idAI::Event_CanHitEnemyFromJoint( const char* jointname )
 	jointHandle_t joint = animator.GetJointHandle( jointname );
 	if( joint == INVALID_JOINT )
 	{
-		gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
+		gameLocal.Warning("Unknown joint '%s' on %s", jointname, GetEntityDefName());
 	}
 	animator.GetJointTransform( joint, gameLocal.time, muzzle, axis );
 	muzzle = org + ( muzzle + modelOffset ) * viewAxis * physicsObj.GetGravityAxis();
@@ -2315,7 +2315,7 @@ void idAI::Event_SetMoveType( int moveType )
 {
 	if( ( moveType < 0 ) || ( moveType >= NUM_MOVETYPES ) )
 	{
-		gameLocal.Error( "Invalid movetype %d", moveType );
+		gameLocal.Warning("Invalid movetype %d", moveType);
 	}
 	
 	move.moveType = static_cast<moveType_t>( moveType );
@@ -2833,7 +2833,7 @@ void idAI::Event_GetTrajectoryToPlayer()
 	
 	if( speed <= 0.0f )
 	{
-		gameLocal.Error( "Invalid speed.  speed must be > 0." );
+		gameLocal.Warning("Invalid speed.  speed must be > 0.");
 	}
 	
 	start = physicsObj.GetOrigin() + idVec3( 0.0f, 0.0f, 50.0f );

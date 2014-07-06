@@ -38,9 +38,9 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 // default scripts
-#define SCRIPT_DEFAULTDEFS			"script/doom_defs.script"
-#define SCRIPT_DEFAULT				"script/doom_main.script"
-#define SCRIPT_DEFAULTFUNC			"doom_main"
+#define SCRIPT_DEFAULTDEFS			"script/defs.script"
+#define SCRIPT_DEFAULT				"script/main.script"
+#define SCRIPT_DEFAULTFUNC			"main"
 
 struct gameReturn_t
 {

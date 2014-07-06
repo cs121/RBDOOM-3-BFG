@@ -2997,7 +2997,7 @@ void idDeclModelDef::SetupJoints( int* numJoints, idJointMat** jointList, idBoun
 	
 	if( !num )
 	{
-		gameLocal.Error( "model '%s' has no joints", modelHandle->Name() );
+		gameLocal.Warning("model '%s' has no joints", modelHandle->Name());
 	}
 	
 	// set up initial pose for model (with no pose, model is just a jumbled mess)
@@ -3714,7 +3714,7 @@ const jointInfo_t* idDeclModelDef::GetJoint( int jointHandle ) const
 {
 	if( ( jointHandle < 0 ) || ( jointHandle > joints.Num() ) )
 	{
-		gameLocal.Error( "idDeclModelDef::GetJoint : joint handle out of range" );
+		gameLocal.Warning("idDeclModelDef::GetJoint : joint handle out of range");
 	}
 	return &joints[ jointHandle ];
 }
@@ -3735,7 +3735,7 @@ const char* idDeclModelDef::GetJointName( int jointHandle ) const
 	
 	if( ( jointHandle < 0 ) || ( jointHandle > joints.Num() ) )
 	{
-		gameLocal.Error( "idDeclModelDef::GetJointName : joint handle out of range" );
+		gameLocal.Warning("idDeclModelDef::GetJointName : joint handle out of range");
 	}
 	
 	joint = modelHandle->GetJoints();
@@ -3751,7 +3751,7 @@ int idDeclModelDef::NumJointsOnChannel( int channel ) const
 {
 	if( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idDeclModelDef::NumJointsOnChannel : channel out of range" );
+		gameLocal.Warning("idDeclModelDef::NumJointsOnChannel : channel out of range");
 		return 0;
 	}
 	return channelJoints[ channel ].Num();
@@ -3766,7 +3766,7 @@ const int* idDeclModelDef::GetChannelJoints( int channel ) const
 {
 	if( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idDeclModelDef::GetChannelJoints : channel out of range" );
+		gameLocal.Warning("idDeclModelDef::GetChannelJoints : channel out of range");
 		return NULL;
 	}
 	return channelJoints[ channel ].Ptr();
@@ -4292,7 +4292,7 @@ idAnimBlend* idAnimator::CurrentAnim( int channelNum )
 {
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::CurrentAnim : channel out of range" );
+		gameLocal.Warning("idAnimator::CurrentAnim : channel out of range");
 		return NULL;
 	}
 	
@@ -4311,7 +4311,7 @@ void idAnimator::Clear( int channelNum, int currentTime, int cleartime )
 	
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::Clear : channel out of range" );
+		gameLocal.Warning("idAnimator::Clear : channel out of range");
 		return;
 	}
 	
@@ -4332,7 +4332,7 @@ void idAnimator::SetFrame( int channelNum, int animNum, int frame, int currentTi
 {
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::SetFrame : channel out of range" );
+		gameLocal.Warning("idAnimator::SetFrame : channel out of range");
 	}
 	
 	if( !modelDef || !modelDef->GetAnim( animNum ) )
@@ -4357,7 +4357,7 @@ void idAnimator::CycleAnim( int channelNum, int animNum, int currentTime, int bl
 {
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::CycleAnim : channel out of range" );
+		gameLocal.Warning("idAnimator::CycleAnim : channel out of range");
 	}
 	
 	if( !modelDef || !modelDef->GetAnim( animNum ) )
@@ -4382,7 +4382,7 @@ void idAnimator::PlayAnim( int channelNum, int animNum, int currentTime, int ble
 {
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::PlayAnim : channel out of range" );
+		gameLocal.Warning("idAnimator::PlayAnim : channel out of range");
 	}
 	
 	if( !modelDef || !modelDef->GetAnim( animNum ) )
@@ -4407,7 +4407,7 @@ void idAnimator::SyncAnimChannels( int channelNum, int fromChannelNum, int curre
 {
 	if( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) || ( fromChannelNum < 0 ) || ( fromChannelNum >= ANIM_NumAnimChannels ) )
 	{
-		gameLocal.Error( "idAnimator::SyncToChannel : channel out of range" );
+		gameLocal.Warning("idAnimator::SyncToChannel : channel out of range");
 		return;
 	}
 	
@@ -5547,13 +5547,13 @@ int idAnimator::GetChannelForJoint( jointHandle_t joint ) const
 {
 	if( !modelDef )
 	{
-		gameLocal.Error( "idAnimator::GetChannelForJoint: NULL model" );
+		gameLocal.Warning("idAnimator::GetChannelForJoint: NULL model");
 		return -1;
 	}
 	
 	if( ( joint < 0 ) || ( joint >= numJoints ) )
 	{
-		gameLocal.Error( "idAnimator::GetChannelForJoint: invalid joint num (%d)", joint );
+		gameLocal.Warning("idAnimator::GetChannelForJoint: invalid joint num (%d)", joint);
 		return -1;
 	}
 	
@@ -6000,7 +6000,7 @@ void idGameEdit::ANIM_CreateAnimFrame( const idRenderModel* model, const idMD5An
 	
 	if( numJoints != model->NumJoints() )
 	{
-		gameLocal.Error( "ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model->Name() );
+		gameLocal.Warning("ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model->Name());
 	}
 	
 	if( !model->NumJoints() )
@@ -6011,7 +6011,7 @@ void idGameEdit::ANIM_CreateAnimFrame( const idRenderModel* model, const idMD5An
 	
 	if( !joints )
 	{
-		gameLocal.Error( "ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model->Name() );
+		gameLocal.Warning("ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model->Name());
 	}
 	
 	if( numJoints != anim->NumJoints() )

@@ -177,7 +177,7 @@ void idSecurityCamera::Spawn()
 	
 	if( !collisionModelManager->TrmFromModel( str, trm ) )
 	{
-		gameLocal.Error( "idSecurityCamera '%s': cannot load collision model %s", name.c_str(), str.c_str() );
+		gameLocal.Warning("idSecurityCamera '%s': cannot load collision model %s", name.c_str(), str.c_str());
 		return;
 	}
 	

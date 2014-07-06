@@ -1107,7 +1107,7 @@ void idInventory::Drop( const idDict& spawnArgs, const char* weapon_classname, i
 		}
 		if( weapon_index >= MAX_WEAPONS )
 		{
-			gameLocal.Error( "Unknown weapon '%s'", weapon_classname );
+			gameLocal.Warning("Unknown weapon '%s'", weapon_classname);
 		}
 	}
 	else if( !weapon_classname )
@@ -1183,7 +1183,7 @@ bool idInventory::HasEmptyClipCannotRefill( const char* weapon_classname, idPlay
 	const idDeclEntityDef* decl = gameLocal.FindEntityDef( weapon_classname, false );
 	if( decl == NULL )
 	{
-		gameLocal.Error( "Unknown weapon in decl '%s'", weapon_classname );
+		gameLocal.Warning("Unknown weapon in decl '%s'", weapon_classname);
 		return false;
 	}
 	int minclip = decl->dict.GetInt( "minclipsize" );
@@ -1917,21 +1917,21 @@ void idPlayer::Init()
 	hipJoint = animator.GetJointHandle( value );
 	if( hipJoint == INVALID_JOINT )
 	{
-		gameLocal.Error( "Joint '%s' not found for 'bone_hips' on '%s'", value, name.c_str() );
+		gameLocal.Warning("Joint '%s' not found for 'bone_hips' on '%s'", value, name.c_str());
 	}
 	
 	value = spawnArgs.GetString( "bone_chest", "" );
 	chestJoint = animator.GetJointHandle( value );
 	if( chestJoint == INVALID_JOINT )
 	{
-		gameLocal.Error( "Joint '%s' not found for 'bone_chest' on '%s'", value, name.c_str() );
+		gameLocal.Warning("Joint '%s' not found for 'bone_chest' on '%s'", value, name.c_str());
 	}
 	
 	value = spawnArgs.GetString( "bone_head", "" );
 	headJoint = animator.GetJointHandle( value );
 	if( headJoint == INVALID_JOINT )
 	{
-		gameLocal.Error( "Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str() );
+		gameLocal.Warning("Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str());
 	}
 	
 	// initialize the script variables

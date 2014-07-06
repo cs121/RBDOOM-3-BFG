@@ -829,6 +829,7 @@ typedef enum
 	SND_CHANNEL_PDA_VIDEO,
 	SND_CHANNEL_DEMONIC,
 	SND_CHANNEL_RADIO,
+	SND_CHANNEL_MUSIC,
 	
 	// internal use only.  not exposed to script or framecommands.
 	SND_CHANNEL_AMBIENT,

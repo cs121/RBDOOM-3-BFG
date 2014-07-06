@@ -276,7 +276,7 @@ idEvent* idEvent::Alloc( const idEventDef* evdef, int numargs, va_list args )
 	
 	if( FreeEvents.IsListEmpty() )
 	{
-		gameLocal.Error( "idEvent::Alloc : No more free events" );
+		gameLocal.Warning("idEvent::Alloc : No more free events");
 	}
 	
 	ev = FreeEvents.Next();
@@ -286,7 +286,7 @@ idEvent* idEvent::Alloc( const idEventDef* evdef, int numargs, va_list args )
 	
 	if( numargs != evdef->GetNumArgs() )
 	{
-		gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef->GetName() );
+		gameLocal.Warning("idEvent::Alloc : Wrong number of args for '%s' event.", evdef->GetName());
 	}
 	
 	size = evdef->GetArgSize();
@@ -310,7 +310,7 @@ idEvent* idEvent::Alloc( const idEventDef* evdef, int numargs, va_list args )
 			// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
 			if( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg->type == 'd' ) && ( arg->value == 0 ) ) )
 			{
-				gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName() );
+				gameLocal.Warning("idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName());
 			}
 		}
 		
@@ -364,7 +364,7 @@ idEvent* idEvent::Alloc( const idEventDef* evdef, int numargs, va_list args )
 				break;
 				
 			default :
-				gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef->GetName() );
+				gameLocal.Warning("idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef->GetName());
 				break;
 		}
 	}
@@ -388,7 +388,7 @@ void idEvent::CopyArgs( const idEventDef* evdef, int numargs, va_list args, intp
 	format = evdef->GetArgFormat();
 	if( numargs != evdef->GetNumArgs() )
 	{
-		gameLocal.Error( "idEvent::CopyArgs : Wrong number of args for '%s' event.", evdef->GetName() );
+		gameLocal.Warning("idEvent::CopyArgs : Wrong number of args for '%s' event.", evdef->GetName());
 	}
 	
 	for( i = 0; i < numargs; i++ )
@@ -399,7 +399,7 @@ void idEvent::CopyArgs( const idEventDef* evdef, int numargs, va_list args, intp
 			// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
 			if( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg->type == 'd' ) && ( arg->value == 0 ) ) )
 			{
-				gameLocal.Error( "idEvent::CopyArgs : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName() );
+				gameLocal.Warning("idEvent::CopyArgs : Wrong type passed in for arg # %d on '%s' event.", i, evdef->GetName());
 			}
 		}
 		
@@ -638,7 +638,7 @@ void idEvent::ServiceEvents()
 					break;
 					
 				default:
-					gameLocal.Error( "idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev->GetName() );
+					gameLocal.Warning("idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev->GetName());
 			}
 		}
 		
@@ -653,7 +653,7 @@ void idEvent::ServiceEvents()
 		// enable this code to check if any event call left values on the FPU stack
 		if( !sys->FPU_StackIsEmpty() )
 		{
-			gameLocal.Error( "idEvent::ServiceEvents %d: %s left a value on the FPU stack\n", num, ev->GetName() );
+			gameLocal.Warning( "idEvent::ServiceEvents %d: %s left a value on the FPU stack\n", num, ev->GetName() );
 		}
 #endif
 		
@@ -750,7 +750,7 @@ void idEvent::ServiceFastEvents()
 					break;
 					
 				default:
-					gameLocal.Error( "idEvent::ServiceFastEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev->GetName() );
+					gameLocal.Warning("idEvent::ServiceFastEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev->GetName());
 			}
 		}
 		

@@ -440,7 +440,7 @@ bool idSmokeParticles::UpdateRenderEntity( renderEntity_s* renderEntity, const r
 		}
 		if( tri->numVerts > quads * 4 )
 		{
-			gameLocal.Error( "idSmokeParticles::UpdateRenderEntity: miscounted verts" );
+			gameLocal.Warning("idSmokeParticles::UpdateRenderEntity: miscounted verts");
 		}
 		
 		if( tri->numVerts == 0 )

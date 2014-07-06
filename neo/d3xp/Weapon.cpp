@@ -1207,7 +1207,7 @@ void idWeapon::GetWeaponDef( const char* objectname, int ammoinclip )
 		meleeDef = gameLocal.FindEntityDef( meleeDefName, false );
 		if( !meleeDef )
 		{
-			gameLocal.Error( "Unknown melee '%s'", meleeDefName.c_str() );
+			gameLocal.Warning("Unknown melee '%s'", meleeDefName.c_str());
 		}
 	}
 	
@@ -1267,13 +1267,15 @@ void idWeapon::GetWeaponDef( const char* objectname, int ammoinclip )
 	
 	if( !weaponDef->dict.GetString( "weapon_scriptobject", NULL, &objectType ) )
 	{
-		gameLocal.Error( "No 'weapon_scriptobject' set on '%s'.", objectname );
+		gameLocal.Warning("No 'weapon_scriptobject' set on '%s'.", objectname);
+		return;
 	}
 	
 	// setup script object
 	if( !scriptObject.SetType( objectType ) )
 	{
-		gameLocal.Error( "Script object '%s' not found on weapon '%s'.", objectType, objectname );
+		gameLocal.Warning("Script object '%s' not found on weapon '%s'.", objectType, objectname);
+		return;
 	}
 	
 	WEAPON_ATTACK.LinkTo(	scriptObject, "WEAPON_ATTACK" );
@@ -2138,7 +2140,7 @@ void idWeapon::SetState( const char* statename, int blendFrames )
 	if( !func )
 	{
 		assert( 0 );
-		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
+		gameLocal.Warning( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
 	}
 	
 	thread->CallFunction( this, func, true );
@@ -2345,7 +2347,7 @@ idThread* idWeapon::ConstructScriptObject()
 	constructor = scriptObject.GetConstructor();
 	if( !constructor )
 	{
-		gameLocal.Error( "Missing constructor on '%s' for weapon", scriptObject.GetTypeName() );
+		gameLocal.Warning( "Missing constructor on '%s' for weapon", scriptObject.GetTypeName() );
 	}
 	
 	// init the script object's data
@@ -3011,7 +3013,7 @@ ammo_t idWeapon::GetAmmoNumForName( const char* ammoname )
 	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", false );
 	if( ammoDict == NULL )
 	{
-		gameLocal.Error( "Could not find entity definition for 'ammo_types'\n" );
+		gameLocal.Warning( "Could not find entity definition for 'ammo_types'\n" );
 		return 0;
 	}
 	
@@ -3050,7 +3052,7 @@ const char* idWeapon::GetAmmoNameForNum( ammo_t ammonum )
 	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", false );
 	if( ammoDict == NULL )
 	{
-		gameLocal.Error( "Could not find entity definition for 'ammo_types'\n" );
+		gameLocal.Warning( "Could not find entity definition for 'ammo_types'\n" );
 		return NULL;
 	}
 	
@@ -3084,7 +3086,7 @@ const char* idWeapon::GetAmmoPickupNameForNum( ammo_t ammonum )
 	ammoDict = gameLocal.FindEntityDefDict( "ammo_names", false );
 	if( !ammoDict )
 	{
-		gameLocal.Error( "Could not find entity definition for 'ammo_names'\n" );
+		gameLocal.Warning( "Could not find entity definition for 'ammo_names'\n" );
 	}
 	
 	const char* name = GetAmmoNameForNum( ammonum );
@@ -3378,7 +3380,7 @@ void idWeapon::Event_WeaponState( const char* statename, int blendFrames )
 	if( !func )
 	{
 		assert( 0 );
-		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
+		gameLocal.Warning( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
 	}
 	
 	idealState = statename;
@@ -3841,7 +3843,7 @@ void idWeapon::Event_GetLightParm( int parmnum )
 {
 	if( ( parmnum < 0 ) || ( parmnum >= MAX_ENTITY_SHADER_PARMS ) )
 	{
-		gameLocal.Error( "shader parm index (%d) out of range", parmnum );
+		gameLocal.Warning( "shader parm index (%d) out of range", parmnum );
 		return;
 	}
 	
@@ -3857,7 +3859,7 @@ void idWeapon::Event_SetLightParm( int parmnum, float value )
 {
 	if( ( parmnum < 0 ) || ( parmnum >= MAX_ENTITY_SHADER_PARMS ) )
 	{
-		gameLocal.Error( "shader parm index (%d) out of range", parmnum );
+		gameLocal.Warning( "shader parm index (%d) out of range", parmnum );
 		return;
 	}
 	
@@ -4123,7 +4125,7 @@ void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float
 			if( ent == NULL || !ent->IsType( idProjectile::Type ) )
 			{
 				const char* projectileName = weaponDef->dict.GetString( "def_projectile" );
-				gameLocal.Error( "'%s' is not an idProjectile", projectileName );
+				gameLocal.Warning( "'%s' is not an idProjectile", projectileName );
 				return;
 			}
 			
@@ -4328,7 +4330,7 @@ void idWeapon::Event_LaunchProjectilesEllipse( int num_projectiles, float spread
 			if( ent == NULL || !ent->IsType( idProjectile::Type ) )
 			{
 				const char* projectileName = weaponDef->dict.GetString( "def_projectile" );
-				gameLocal.Error( "'%s' is not an idProjectile", projectileName );
+				gameLocal.Warning( "'%s' is not an idProjectile", projectileName );
 				return;
 			}
 			
@@ -4512,13 +4514,13 @@ void idWeapon::Event_Melee()
 	
 	if( weaponDef == NULL )
 	{
-		gameLocal.Error( "No weaponDef on '%s'", this->GetName() );
+		gameLocal.Warning( "No weaponDef on '%s'", this->GetName() );
 		return;
 	}
 	
 	if( meleeDef == NULL )
 	{
-		gameLocal.Error( "No meleeDef on '%s'", weaponDef->dict.GetString( "classname" ) );
+		gameLocal.Warning( "No meleeDef on '%s'", weaponDef->dict.GetString( "classname" ) );
 		return;
 	}
 	
@@ -4722,7 +4724,7 @@ void idWeapon::Event_EjectBrass()
 	gameLocal.SpawnEntityDef( brassDict, &ent, false );
 	if( !ent || !ent->IsType( idDebris::Type ) )
 	{
-		gameLocal.Error( "'%s' is not an idDebris", weaponDef ? weaponDef->dict.GetString( "def_ejectBrass" ) : "def_ejectBrass" );
+		gameLocal.Warning("'%s' is not an idDebris", weaponDef ? weaponDef->dict.GetString("def_ejectBrass") : "def_ejectBrass");
 	}
 	idDebris* debris = static_cast<idDebris*>( ent );
 	debris->Create( owner, origin, axis );

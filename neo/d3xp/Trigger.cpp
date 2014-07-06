@@ -689,7 +689,7 @@ void idTrigger_EntityName::Spawn()
 	entityName = spawnArgs.GetString( "entityname" );
 	if( !entityName.Length() )
 	{
-		gameLocal.Error( "idTrigger_EntityName '%s' at (%s) doesn't have 'entityname' key specified", name.c_str(), GetPhysics()->GetOrigin().ToString( 0 ) );
+		gameLocal.Warning("idTrigger_EntityName '%s' at (%s) doesn't have 'entityname' key specified", name.c_str(), GetPhysics()->GetOrigin().ToString(0));
 	}
 	
 	nextTriggerTime = 0;
